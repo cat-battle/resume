@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AJ Zahnow — Resume</title>
+    <style>
+        :root {
+            --bg: #1a1a2e;
+            --card-bg: #16213e;
+            --text: #e0e0e0;
+            --text-muted: #888;
+            --accent: #00d4ff;
+            --heading: #fff;
+            --divider: rgba(255,255,255,0.1);
+        }
+
+        @media print {
+            :root {
+                --bg: #fff;
+                --card-bg: #fff;
+                --text: #333;
+                --text-muted: #555;
+                --accent: #0055aa;
+                --heading: #111;
+                --divider: #ccc;
+            }
+            body { padding: 0; font-size: 9pt; line-height: 1.35; margin: 0; }
+            .container { max-width: 100%; box-shadow: none; padding: 10px 25px; border-radius: 0; }
+            .no-print { display: none !important; }
+            .section { margin-bottom: 6px; }
+            .section h2 { margin-bottom: 4px; font-size: 9pt; padding-bottom: 2px; }
+            .summary { font-size: 9pt; line-height: 1.4; }
+            ul li { padding: 1px 0 1px 12px; font-size: 8.5pt; line-height: 1.35; }
+            .header { margin-bottom: 6px; padding-bottom: 6px; }
+            .header h1 { font-size: 16pt; margin-bottom: 1px; }
+            .header .title { font-size: 10pt; margin-bottom: 4px; }
+            .header .contact { font-size: 8pt; }
+            .skills-compact { font-size: 8.5pt; line-height: 1.4; }
+            .role { margin: 6px 0 2px 0; }
+            .role-title { font-size: 9pt; }
+            .role-dates { font-size: 8pt; }
+            .company-header .name { font-size: 9.5pt; }
+            .company-header .meta { font-size: 8pt; }
+            .edu-line { font-size: 8.5pt; margin-bottom: 2px; }
+            .interests-line { font-size: 8.5pt; }
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Segoe UI', -apple-system, BlinkMacSystemFont, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.5;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 850px;
+            margin: 0 auto;
+            background: var(--card-bg);
+            border-radius: 12px;
+            padding: 35px 45px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 18px;
+            padding-bottom: 12px;
+            border-bottom: 2px solid var(--accent);
+        }
+
+        .header h1 {
+            font-size: 2em;
+            color: var(--heading);
+            margin-bottom: 3px;
+            letter-spacing: 1px;
+        }
+
+        .header .title {
+            font-size: 1.1em;
+            color: var(--accent);
+            margin-bottom: 8px;
+        }
+
+        .header .contact {
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        .header .contact a {
+            color: var(--accent);
+            text-decoration: none;
+        }
+
+        .section {
+            margin-bottom: 16px;
+        }
+
+        .section h2 {
+            font-size: 1em;
+            color: var(--accent);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+            padding-bottom: 4px;
+            border-bottom: 1px solid var(--divider);
+        }
+
+        .summary {
+            font-size: 0.9em;
+            line-height: 1.6;
+        }
+
+        .skills-compact {
+            font-size: 0.88em;
+            line-height: 1.7;
+        }
+
+        .skills-compact strong {
+            color: var(--text-muted);
+        }
+
+        .company-header {
+            margin-bottom: 2px;
+        }
+
+        .company-header .name {
+            font-weight: 700;
+            color: var(--heading);
+            font-size: 1.05em;
+        }
+
+        .company-header .meta {
+            color: var(--text-muted);
+            font-size: 0.88em;
+        }
+
+        .role {
+            margin: 12px 0 4px 0;
+        }
+
+        .role-title {
+            font-weight: 700;
+            color: var(--heading);
+            font-size: 0.95em;
+            display: inline;
+        }
+
+        .role-dates {
+            color: var(--text-muted);
+            font-size: 0.85em;
+        }
+
+        ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        ul li {
+            padding: 2px 0 2px 16px;
+            position: relative;
+            font-size: 0.88em;
+        }
+
+        ul li::before {
+            content: '▸';
+            position: absolute;
+            left: 0;
+            color: var(--accent);
+        }
+
+        .edu-line {
+            font-size: 0.9em;
+            margin-bottom: 4px;
+        }
+
+        .edu-line strong {
+            color: var(--heading);
+        }
+
+        .edu-line .school {
+            color: var(--text-muted);
+        }
+
+        .interests-line {
+            font-size: 0.88em;
+        }
+
+        .toolbar {
+            text-align: center;
+            margin-bottom: 15px;
+        }
+
+        .toolbar button {
+            background: var(--accent);
+            color: #000;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            font-size: 0.9em;
+        }
+
+        .toolbar button:hover { opacity: 0.85; }
+
+        .nav {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1rem;
+            margin-bottom: 1rem;
+        }
+
+        .nav a {
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <nav class="nav no-print">
+        <a href="index.html">📰 Newsletter</a>
+        <a href="kanban.html">📋 Board</a>
+        <a href="campsite.html">🏕️ Camping</a>
+        <a href="status.html">📊 Status</a>
+    </nav>
+
+    <div class="toolbar no-print">
+        <button onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>AJ Zahnow</h1>
+            <div class="title">Senior Firmware Engineer</div>
+            <div class="contact">
+                📧 andrew.zahnow@gmail.com · 📱 541.292.4331 · 📍 Boise, ID · 🔗 <a href="https://www.linkedin.com/in/ajzahnow/">linkedin.com/in/ajzahnow</a> · 💻 github.com/cat-battle
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Summary</h2>
+            <p class="summary">Firmware engineer with 15 years of experience shipping 42 embedded products at scale across consumer, SMB, and enterprise environments. Coordinated firmware delivery across a 500+ developer global organization spanning 3 continents. Resolved critical customer escalations tied to $100M+ contracts. Delivered the first product on a ground-up cross-platform codebase spanning inkjet, laserjet, and large-format printers. Deep expertise in ARM-based systems, RTOS, and Linux firmware with a proven track record of mentoring engineers and driving technical innovation.</p>
+        </div>
+
+        <div class="section">
+            <h2>Technical Skills</h2>
+            <div class="skills-compact">
+                <strong>Languages:</strong> C, C++, Python, Bash · <strong>OS:</strong> ThreadX (RTOS), Embedded Linux · <strong>Toolchains:</strong> GCC, GHS<br>
+                <strong>Architectures:</strong> ARM (Cortex-M3, M7, R4, A7, A9, A35, PJ946) on custom ASIC platforms<br>
+                <strong>Protocols:</strong> USB (subject matter expert), SPI, I2C, UART, network protocols<br>
+                <strong>Tools:</strong> Git (Gerrit, GHE), Jenkins, ADICT, TestRails, Saleae, LeCroy CATC/Advisor T3, Wireshark<br>
+                <strong>Domains:</strong> BSP, secure boot/root of trust, firmware integration, manufacturing, regulatory compliance (EMC/RFI)<br>
+                <strong>AI Tooling:</strong> GitHub Copilot, Copilot CLI, Claude Code — early adopter and internal advocate
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Professional Experience</h2>
+
+            <div class="company-header">
+                <span class="name">HP Inc.</span> <span class="meta">— Boise, ID · 2011 – Present · LaserJet Firmware Organization</span>
+            </div>
+
+            <div class="role">
+                <div class="role-title">System Integrator & Product Lead Firmware Engineer</div>
+                <div class="role-dates">2020 – Present</div>
+            </div>
+            <ul>
+                <li>Firmware product lead for 3 product families (color/mono Pro-series) for SMB and enterprise</li>
+                <li>Delivered 5 releases across 6 products in 3 years on a new cross-platform codebase</li>
+                <li>Coordinate integration and release across 500–600 developers in the Americas, Europe, and Asia</li>
+                <li>Own end-to-end delivery from board bring-up through production at hundreds of thousands of units/month</li>
+                <li>Facilitated regulatory testing (EMC/RFI) in Japan during early firmware bring-up</li>
+                <li>Mentored 7–8 new engineers from onboarding through independent project ownership</li>
+            </ul>
+
+            <div class="role">
+                <div class="role-title">BSP Firmware Team Lead & Subscription Platform Lead</div>
+                <div class="role-dates">~2016 – 2020</div>
+            </div>
+            <ul>
+                <li>Led BSP team: platform bring-up, bootloaders, drivers, HAL across ARM-based custom ASICs</li>
+                <li>Contributed embedded firmware ROM into ASICs with secure boot primitives establishing hardware root of trust</li>
+                <li>Concurrently led firmware team delivering the foundation for a new subscription-based product platform</li>
+                <li>Reduced RAM 64MB→8MB and ROM 16MB→8MB while maintaining 29 PPM — enabling an ultra-low-cost product tier</li>
+                <li>Organization's USB subject matter expert using LeCroy CATC/Advisor T3 for complex protocol analysis</li>
+                <li>Primary vendor liaison for flash memory pre-programming process; mentored successive engineers maintaining the system</li>
+                <li>Traveled to production lines to resolve high-priority manufacturing issues</li>
+            </ul>
+
+            <div class="role">
+                <div class="role-title">BSP Firmware Engineer</div>
+                <div class="role-dates">2011 – ~2016</div>
+            </div>
+            <ul>
+                <li>Developed BSP firmware: bootloaders, peripheral drivers, and hardware bring-up on ARM platforms</li>
+                <li>Sole engineer delivering control panel MCU firmware across multiple product lines — full ownership through production</li>
+                <li>Built a lightweight file system on SPI-NOR flash for open-source third-party component integration</li>
+                <li>Established institutional expertise in control panel architecture, becoming the org-wide reference</li>
+                <li>Architected flash memory pre-programming process with third-party vendor, transforming from 4-unit batch to high-speed reel-to-reel production — still in active use 10+ years later across multiple product lines</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Leadership & Mentoring</h2>
+            <ul>
+                <li>Champion AI-assisted development tools (Copilot, Copilot CLI) across the firmware organization</li>
+                <li>Mentored engineers throughout career, many advancing into senior technical and leadership roles</li>
+                <li>Served on engineering interview panel for multiple years</li>
+                <li>Recognized by leadership for principal-level impact; encouraged to pursue Master/Principal promotion</li>
+            </ul>
+        </div>
+
+        <div class="section">
+            <h2>Education</h2>
+            <div class="edu-line"><strong>BS Embedded Systems Engineering Technology</strong> — <span class="school">Oregon Institute of Technology, 2011</span></div>
+            <div class="edu-line"><strong>Tech Leadership Academy</strong> — <span class="school">TrainUp.com · Business acumen program with capstone presentation to senior leadership</span></div>
+        </div>
+
+        <div class="section">
+            <h2>Projects & Interests</h2>
+            <p class="interests-line">Embedded AI/TinyML (ESP32, Cortex-M) · DIY ATV tuning assistant (ESP32 + wideband O2 + air density sensors) · Multi-agent AI systems for developer productivity</p>
+        </div>
+    </div>
+
+    <div class="toolbar no-print" style="margin-top:15px">
+        <button onclick="window.print()">🖨️ Print / Save PDF</button>
+    </div>
+</body>
+</html>
