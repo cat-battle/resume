@@ -206,19 +206,6 @@
         }
 
         .toolbar button:hover { opacity: 0.85; }
-
-        .nav {
-            display: flex;
-            justify-content: flex-end;
-            gap: 1rem;
-            margin-bottom: 1rem;
-        }
-
-        .nav a {
-            color: var(--text-muted);
-            text-decoration: none;
-            font-size: 0.9rem;
-        }
     </style>
 </head>
 <body>
@@ -238,17 +225,18 @@
 
         <div class="section">
             <h2>Summary</h2>
-            <p class="summary">Firmware engineer with 15 years of experience shipping 42 embedded products at scale across consumer, SMB, and enterprise environments. Coordinated firmware delivery across a 500+ developer global organization spanning 3 continents. Resolved critical customer escalations tied to $100M+ contracts. Delivered the first product on a ground-up cross-platform codebase spanning inkjet, laserjet, and large-format printers. Deep expertise in ARM-based systems, RTOS, and Linux firmware with a proven track record of mentoring engineers and driving technical innovation.</p>
+            <p class="summary">Firmware engineering leader with 15 years delivering 40+ embedded products at scale across consumer, SMB, and enterprise markets. Drove firmware strategy and integration across a 500+ developer global organization spanning 3 continents. Resolved critical customer escalations tied to $100M+ contracts and delivered the first product on a ground-up cross-platform codebase unifying inkjet, laserjet, and large-format architectures. Combines deep ARM/RTOS/Linux technical expertise with a track record of leading teams, mentoring 15+ engineers, and championing modern development practices across the organization.</p>
         </div>
 
         <div class="section">
             <h2>Technical Skills</h2>
             <div class="skills-compact">
-                <strong>Languages:</strong> C, C++, Python, Bash · <strong>OS:</strong> ThreadX (RTOS), Embedded Linux · <strong>Toolchains:</strong> GCC, GHS<br>
-                <strong>Architectures:</strong> ARM (Cortex-M3, M7, R4, A7, A9, A35, PJ946) on custom ASIC platforms<br>
+                <strong>Languages:</strong> C, C++, Python, Bash, Assembly · <strong>OS:</strong> ThreadX (RTOS), Embedded Linux<br>
+                <strong>Toolchains:</strong> GCC, GHS, Make, Yocto · <strong>Architectures:</strong> ARM (Cortex-M3, M7, R4, A7, A9, A35, PJ946) on custom ASIC platforms<br>
                 <strong>Protocols:</strong> USB (subject matter expert), SPI, I2C, UART, network protocols<br>
-                <strong>Tools:</strong> Git (Gerrit, GHE), Jenkins, ADICT, TestRails, Saleae, LeCroy CATC/Advisor T3, Wireshark<br>
-                <strong>Domains:</strong> BSP, secure boot/root of trust, firmware integration, manufacturing, regulatory compliance (EMC/RFI)<br>
+                <strong>Tools:</strong> Git (Gerrit, GHE), Jenkins, Jira, Docker, JTAG/SWD, GDB, Lauterbach TRACE32, oscilloscope, Saleae, LeCroy CATC/Advisor T3, Wireshark, ADICT, TestRails<br>
+                <strong>Practices:</strong> Code review, CI/CD, Coverity (static analysis), Google Test, debugging/troubleshooting, cross-functional collaboration, schematic review<br>
+                <strong>Domains:</strong> BSP, DMA, interrupt handling/ISR, memory management, RTOS concepts (semaphores, mutexes, task scheduling), power management, system performance, secure boot/root of trust, intellectual property protection, OTA firmware updates, firmware integration, manufacturing, regulatory compliance (EMC/RFI/ESD)<br>
                 <strong>AI Tooling:</strong> GitHub Copilot, Copilot CLI, Claude Code — early adopter and internal advocate
             </div>
         </div>
@@ -265,12 +253,13 @@
                 <div class="role-dates">2020 – Present</div>
             </div>
             <ul>
-                <li>Firmware product lead for 3 product families (color/mono Pro-series) for SMB and enterprise</li>
+                <li>Lead firmware delivery for 3 product families serving SMB and enterprise markets, shipping hundreds of thousands of units monthly</li>
                 <li>Delivered 5 releases across 6 products in 3 years on a new cross-platform codebase</li>
                 <li>Coordinate integration and release across 500–600 developers in the Americas, Europe, and Asia</li>
-                <li>Own end-to-end delivery from board bring-up through production at hundreds of thousands of units/month</li>
-                <li>Facilitated regulatory testing (EMC/RFI) in Japan during early firmware bring-up</li>
-                <li>Mentored 7–8 new engineers from onboarding through independent project ownership</li>
+                <li>Drive end-to-end firmware lifecycle — from silicon bring-up and board validation through production release — owning technical delivery across multiple hardware platforms</li>
+                <li>Led firmware validation for EMC/RFI/ESD regulatory compliance in Japan, achieving first-pass certification for international market launch</li>
+                <li>Mentored 7–8 engineers from onboarding through independent project ownership</li>
+                <li>Led beta test programs for new product introductions, coordinating cross-functional validation to ensure production readiness</li>
             </ul>
 
             <div class="role">
@@ -278,13 +267,14 @@
                 <div class="role-dates">~2016 – 2020</div>
             </div>
             <ul>
-                <li>Led BSP team: platform bring-up, bootloaders, drivers, HAL across ARM-based custom ASICs</li>
+                <li>Led BSP team of 5 engineers delivering platform bring-up, bootloaders, drivers, and HAL for ARM-based custom ASICs powering 10 product lines</li>
+                <li>Led ASIC turn-on, block-level validation, and early silicon bring-up activities, establishing firmware readiness ahead of production silicon availability</li>
                 <li>Contributed embedded firmware ROM into ASICs with secure boot primitives establishing hardware root of trust</li>
-                <li>Concurrently led firmware team delivering the foundation for a new subscription-based product platform</li>
+                <li>Concurrently led firmware team that built the embedded foundation for HP's subscription-based printing platform, enabling a recurring revenue business line</li>
                 <li>Reduced RAM 64MB→8MB and ROM 16MB→8MB while maintaining 29 PPM — enabling an ultra-low-cost product tier</li>
                 <li>Organization's USB subject matter expert using LeCroy CATC/Advisor T3 for complex protocol analysis</li>
-                <li>Primary vendor liaison for flash memory pre-programming process; mentored successive engineers maintaining the system</li>
-                <li>Traveled to production lines to resolve high-priority manufacturing issues</li>
+                <li>Managed vendor relationship for the flash pre-programming pipeline, ensuring continuity across product generations and mentoring 3+ successor engineers</li>
+                <li>Deployed to production facilities during full line-down events, rapidly diagnosing and resolving critical manufacturing defects to restore high-volume production throughput</li>
             </ul>
 
             <div class="role">
@@ -292,7 +282,7 @@
                 <div class="role-dates">2011 – ~2016</div>
             </div>
             <ul>
-                <li>Developed BSP firmware: bootloaders, peripheral drivers, and hardware bring-up on ARM platforms</li>
+                <li>Engineered BSP firmware including bootloaders, peripheral drivers, and hardware initialization for ARM Cortex-M/R platforms, contributing to 10+ product launches</li>
                 <li>Sole engineer delivering control panel MCU firmware across multiple product lines — full ownership through production</li>
                 <li>Built a lightweight file system on SPI-NOR flash for open-source third-party component integration</li>
                 <li>Established institutional expertise in control panel architecture, becoming the org-wide reference</li>
@@ -303,9 +293,9 @@
         <div class="section">
             <h2>Leadership & Mentoring</h2>
             <ul>
-                <li>Champion AI-assisted development tools (Copilot, Copilot CLI) across the firmware organization</li>
-                <li>Mentored engineers throughout career, many advancing into senior technical and leadership roles</li>
-                <li>Served on engineering interview panel for multiple years</li>
+                <li>Drove adoption of AI-assisted development tools (GitHub Copilot in VSCode, GitHub Copilot CLI) across the firmware organization</li>
+                <li>Mentored 15+ engineers over a 15-year career, including on-site firmware training for offshore teams in South Korea, Shanghai, Bangalore, and Singapore; multiple mentees advancing into critical roles</li>
+                <li>Evaluated 50+ firmware engineering candidates across multiple years on the interview panel</li>
                 <li>Recognized by leadership for principal-level impact; encouraged to pursue Master/Principal promotion</li>
             </ul>
         </div>
@@ -313,7 +303,7 @@
         <div class="section">
             <h2>Education</h2>
             <div class="edu-line"><strong>BS Embedded Systems Engineering Technology</strong> — <span class="school">Oregon Institute of Technology, 2011</span></div>
-            <div class="edu-line"><strong>Tech Leadership Academy</strong> — <span class="school">TrainUp.com · Business acumen program with capstone presentation to senior leadership</span></div>
+            <div class="edu-line"><strong>Tech Leadership Academy (HP Inc.)</strong> — <span class="school">TrainUp.com · Business acumen program with capstone presentation to senior leadership</span></div>
         </div>
 
         <div class="section">
