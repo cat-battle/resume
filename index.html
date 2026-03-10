@@ -206,9 +206,11 @@
         }
 
         .toolbar button:hover { opacity: 0.85; }
+
     </style>
 </head>
 <body>
+
 
     <div class="toolbar no-print">
         <button onclick="window.print()">🖨️ Print / Save PDF</button>
@@ -269,7 +271,7 @@
             <ul>
                 <li>Led BSP team of 5 engineers delivering platform bring-up, bootloaders, drivers, and HAL for ARM-based custom ASICs powering 10 product lines</li>
                 <li>Led ASIC turn-on, block-level validation, and early silicon bring-up activities, establishing firmware readiness ahead of production silicon availability</li>
-                <li>Contributed embedded firmware ROM into ASICs with secure boot primitives establishing hardware root of trust</li>
+                <li>Reverse-engineered an undocumented ASIC code-signing scheme (PKCS#11/RSA), built a C-based signing utility and mask ROM verification logic, and validated the full chain pre-silicon via gate simulation, fast models, and FPGA — establishing hardware root of trust through secure boot ROM</li>
                 <li>Concurrently led firmware team that built the embedded foundation for HP's subscription-based printing platform, enabling a recurring revenue business line</li>
                 <li>Reduced RAM 64MB→8MB and ROM 16MB→8MB while maintaining 29 PPM — enabling an ultra-low-cost product tier</li>
                 <li>Organization's USB subject matter expert using LeCroy CATC/Advisor T3 for complex protocol analysis</li>
