@@ -1,0 +1,40 @@
+name: Sync Interview Trainer
+
+on:
+  repository_dispatch:
+    types: [sync-interview-trainer]
+  workflow_dispatch:
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout resume repo
+        uses: actions/checkout@v4
+
+      - name: Fetch latest interview trainer
+        uses: actions/checkout@v4
+        with:
+          repository: cat-battle/firmware-interview-trainer
+          path: _trainer_src
+
+      - name: Sync files
+        run: |
+          mkdir -p interview
+          cp _trainer_src/index.html interview/
+          cp _trainer_src/questions.json interview/
+          rm -rf _trainer_src
+
+      - name: Commit and push
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add interview/
+          if git diff --cached --quiet; then
+            echo "No changes to sync"
+          else
+            git commit -m "sync: update interview trainer from firmware-interview-trainer"
+            git push
+          fi
