@@ -36,5 +36,6 @@ jobs:
             echo "No changes to sync"
           else
             git commit -m "sync: update interview trainer from firmware-interview-trainer"
+            git pull --rebase
             git push
           fi
