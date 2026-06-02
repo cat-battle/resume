@@ -1,0 +1,885 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎓 PM & Leadership Interview Trainer</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #58a6ff;
+
+      --cat-bpi: #a855f7;
+      --cat-bpi-bg: rgba(168,85,247,0.12);
+      --cat-em: #3b82f6;
+      --cat-em-bg: rgba(59,130,246,0.12);
+      --cat-core: #14b8a6;
+      --cat-core-bg: rgba(20,184,166,0.12);
+      --cat-resume: #e3b341;
+      --cat-resume-bg: rgba(227,179,65,0.12);
+      --cat-behavioral: #f778ba;
+      --cat-behavioral-bg: rgba(247,120,186,0.12);
+
+      --diff-easy: #22c55e;
+      --diff-easy-bg: rgba(34,197,94,0.12);
+      --diff-medium: #f59e0b;
+      --diff-medium-bg: rgba(245,158,11,0.12);
+      --diff-hard: #ef4444;
+      --diff-hard-bg: rgba(239,68,68,0.12);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    /* ── NAV ── */
+    nav {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      padding: 0 1.5rem;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+    nav ul::-webkit-scrollbar { display: none; }
+    nav ul li a {
+      display: block;
+      padding: 0.85rem 0.9rem;
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      white-space: nowrap;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+    }
+    nav ul li a:hover,
+    nav ul li a.active {
+      color: var(--accent);
+      border-bottom-color: var(--accent);
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      padding: 2.5rem 1.5rem 1.5rem;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .page-header h1 {
+      font-size: clamp(1.4rem, 4vw, 2rem);
+      font-weight: 700;
+      margin-bottom: 0.35rem;
+    }
+    .page-header p {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      max-width: 860px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem;
+    }
+    .stats-row {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .stats-label {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      white-space: nowrap;
+    }
+    .stats-count {
+      font-weight: 700;
+      color: var(--accent);
+    }
+    .progress-bar-track {
+      flex: 1;
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      overflow: hidden;
+    }
+    .progress-bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 3px;
+      transition: width 0.3s ease;
+    }
+
+    /* ── CONTROLS ── */
+    .controls {
+      max-width: 860px;
+      margin: 0 auto 1.5rem;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.75rem;
+    }
+    .filter-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .filter-label {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      min-width: 70px;
+    }
+    .filter-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.3rem 0.75rem;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .filter-btn:hover { border-color: var(--accent); color: var(--text); }
+    .filter-btn.active {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #0d1117;
+      font-weight: 600;
+    }
+    .filter-btn.diff-easy.active  { background: var(--diff-easy);  border-color: var(--diff-easy);  }
+    .filter-btn.diff-medium.active{ background: var(--diff-medium); border-color: var(--diff-medium); }
+    .filter-btn.diff-hard.active  { background: var(--diff-hard);   border-color: var(--diff-hard);   }
+
+    .controls-bottom {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+    }
+    .question-count {
+      font-size: 0.83rem;
+      color: var(--text-muted);
+    }
+    .question-count span { color: var(--text); font-weight: 600; }
+
+    .shuffle-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-size: 0.83rem;
+      cursor: pointer;
+      transition: border-color 0.15s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .shuffle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+    /* ── QUESTION CARDS ── */
+    .card-list {
+      max-width: 860px;
+      margin: 0 auto 3rem;
+      padding: 0 1.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.15s;
+    }
+    .card:hover { border-color: #484f58; }
+    .card.reviewed { border-left: 3px solid var(--accent); }
+
+    .card-top {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-bottom: 0.9rem;
+    }
+    .badge-row {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      flex: 1;
+    }
+    .badge {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.55rem;
+      border-radius: 12px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      white-space: nowrap;
+    }
+    .badge-bpi    { color: var(--cat-bpi);    background: var(--cat-bpi-bg);    }
+    .badge-em     { color: var(--cat-em);     background: var(--cat-em-bg);     }
+    .badge-core       { color: var(--cat-core);       background: var(--cat-core-bg);       }
+    .badge-resume     { color: var(--cat-resume);     background: var(--cat-resume-bg);     }
+    .badge-behavioral { color: var(--cat-behavioral); background: var(--cat-behavioral-bg); }
+    .badge-easy   { color: var(--diff-easy);  background: var(--diff-easy-bg);  }
+    .badge-medium { color: var(--diff-medium);background: var(--diff-medium-bg);}
+    .badge-hard   { color: var(--diff-hard);  background: var(--diff-hard-bg);  }
+
+    .review-checkbox-wrapper {
+      display: flex;
+      align-items: center;
+      gap: 0.35rem;
+      white-space: nowrap;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      cursor: pointer;
+      user-select: none;
+    }
+    .review-checkbox-wrapper input[type="checkbox"] {
+      accent-color: var(--accent);
+      width: 15px;
+      height: 15px;
+      cursor: pointer;
+    }
+
+    .question-text {
+      font-size: 0.97rem;
+      font-weight: 500;
+      line-height: 1.55;
+      margin-bottom: 1rem;
+    }
+
+    .show-answer-btn {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-muted);
+      padding: 0.35rem 0.9rem;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+    }
+    .show-answer-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+    .show-answer-btn.open {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .answer-section {
+      display: none;
+      margin-top: 1rem;
+      padding: 1rem 1.1rem;
+      background: rgba(88, 166, 255, 0.05);
+      border: 1px solid var(--accent);
+      border-radius: 8px;
+      font-size: 0.88rem;
+      line-height: 1.65;
+      color: var(--text);
+      animation: fadeIn 0.2s ease;
+    }
+    .answer-section.open { display: block; }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-4px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .no-results {
+      text-align: center;
+      color: var(--text-muted);
+      padding: 3rem 1rem;
+      font-size: 0.95rem;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 600px) {
+      .page-header h1 { font-size: 1.3rem; }
+      .card { padding: 1rem; }
+      .card-top { flex-direction: column; }
+      .review-checkbox-wrapper { align-self: flex-end; }
+      nav ul li a { padding: 0.75rem 0.65rem; font-size: 0.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+
+<div class="page-header">
+  <h1>🎓 PM &amp; Leadership Interview Trainer</h1>
+  <p>Practice your answers. Mark what you've reviewed. Own the interview.</p>
+</div>
+
+<div class="stats-bar">
+  <div class="stats-row">
+    <span class="stats-label">Progress</span>
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressFill" style="width:0%"></div>
+    </div>
+    <span class="stats-label"><span class="stats-count" id="reviewedCount">0</span> of <span class="stats-count" id="totalCount">25</span> reviewed</span>
+  </div>
+</div>
+
+<div class="controls">
+  <div class="filter-group">
+    <span class="filter-label">Category</span>
+    <button class="filter-btn active" data-cat="all">All</button>
+    <button class="filter-btn" data-cat="bpi">Business Process Innovation</button>
+    <button class="filter-btn" data-cat="em">Engagement Management</button>
+    <button class="filter-btn" data-cat="core">Core Values &amp; Leadership</button>
+    <button class="filter-btn" data-cat="resume">Resume-Based</button>
+    <button class="filter-btn" data-cat="behavioral">Behavioral / STAR</button>
+  </div>
+  <div class="filter-group">
+    <span class="filter-label">Difficulty</span>
+    <button class="filter-btn active" data-diff="all">All</button>
+    <button class="filter-btn diff-easy"   data-diff="easy">Easy</button>
+    <button class="filter-btn diff-medium" data-diff="medium">Medium</button>
+    <button class="filter-btn diff-hard"   data-diff="hard">Hard</button>
+  </div>
+  <div class="controls-bottom">
+    <div class="question-count">Showing <span id="shownCount">25</span> of <span>25</span> questions</div>
+    <button class="shuffle-btn" id="shuffleBtn">⇄ Shuffle</button>
+  </div>
+</div>
+
+<div class="card-list" id="cardList"></div>
+
+<script>
+const STORAGE_KEY = 'pm-interview-reviewed';
+
+const QUESTIONS = [
+  {
+    id: "bpi-easy-001",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "easy",
+    question: "What is the difference between Lean and Six Sigma methodologies?",
+    answer: "Lean focuses on eliminating waste (the 8 wastes: overproduction, waiting, transport, over-processing, inventory, motion, defects, unused talent) to improve flow and speed. Six Sigma focuses on reducing variation and defects using data-driven methods (DMAIC: Define, Measure, Analyze, Improve, Control). In practice, they\u2019re often combined as Lean Six Sigma \u2014 using Lean to streamline processes and Six Sigma to reduce variability."
+  },
+  {
+    id: "bpi-easy-002",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "easy",
+    question: "Name the 8 Wastes in Lean methodology and give an example of each.",
+    answer: "1) Overproduction — making more than needed. 2) Waiting — idle time between steps. 3) Transport — unnecessary movement of materials. 4) Over-processing — doing more work than required. 5) Inventory — excess stock or WIP. 6) Motion — unnecessary movement of people. 7) Defects — errors requiring rework. 8) Unused Talent — not leveraging people's skills. Example: A report that goes through 5 approval layers when 2 would suffice (over-processing + waiting)."
+  },
+  {
+    id: "bpi-easy-003",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "easy",
+    question: "What is a Value Stream Map and when would you use one?",
+    answer: "A Value Stream Map (VSM) is a visual tool that documents every step in a process — from initiation to delivery — showing both value-adding and non-value-adding activities. You'd use it at the beginning of a process improvement initiative to understand the current state, identify waste, and design a future state with reduced cycle time and improved quality."
+  },
+  {
+    id: "bpi-easy-004",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "easy",
+    question: "What is Root Cause Analysis? Name two common techniques.",
+    answer: "Root Cause Analysis (RCA) is a systematic approach to identifying the fundamental reason a problem occurred, rather than just addressing symptoms. Two common techniques: 1) 5 Whys — repeatedly asking 'why' until the root cause is reached. 2) Fishbone Diagram (Ishikawa) — categorizing potential causes into buckets like People, Process, Technology, Materials, Environment."
+  },
+  {
+    id: "bpi-medium-001",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "medium",
+    question: "Describe a time you used Lean or Six Sigma tools to identify a bottleneck in a complex process. How did you collect the data, and what was the outcome?",
+    answer: "STAR format: Situation — describe the process and the symptoms (delays, quality issues, cost overruns). Task — your role in diagnosing and fixing. Action — specific tools used (process mapping, data collection, Pareto analysis, control charts). Result — quantified improvement (% reduction in cycle time, cost savings, defect reduction). Strong answers include specific metrics and stakeholder buy-in."
+  },
+  {
+    id: "bpi-medium-002",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "medium",
+    question: "Tell me about a time you were assigned a project with poorly defined requirements. How did you scope the work and align it with organizational goals?",
+    answer: "Look for: Comfort with ambiguity, structured approach to clarification (stakeholder interviews, current state analysis, defining success criteria), ability to connect tactical work to strategic objectives. Strong answers show iterative scoping — starting with a broad understanding and narrowing through data and stakeholder alignment."
+  },
+  {
+    id: "bpi-medium-003",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "medium",
+    question: "How do you ensure that process improvements result in measurable financial or time-based improvements? Give a specific example.",
+    answer: "Strong answers include: establishing baseline KPIs before changes, defining target metrics, tracking after implementation, and creating sustainability mechanisms (standard work, audits, control charts). Example: 'Baselined the order processing time at 4.2 days, implemented workflow automation and reduced handoffs, achieved 2.1 days — a 50% reduction — and set up monthly control charts to sustain.'"
+  },
+  {
+    id: "bpi-medium-004",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "medium",
+    question: "How do you handle resistance from employees when implementing a new, standardized workflow?",
+    answer: "Key elements: acknowledge concerns (empathy), involve people early (co-design), communicate the 'why' clearly, pilot before full rollout, celebrate quick wins, provide training and support. Avoid: mandating change without buy-in, dismissing concerns as resistance, or implementing everything at once."
+  },
+  {
+    id: "bpi-hard-001",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "hard",
+    question: "You're brought in to lead an enterprise-wide process transformation affecting 5 departments and 200+ employees. The executive sponsor has a 6-month deadline. How do you approach this?",
+    answer: "Strong answers show: phased approach (discovery, design, pilot, scale), stakeholder mapping and governance structure, change management plan alongside technical plan, risk assessment, quick wins to build momentum, executive alignment cadence. Realistic acknowledgment that 6 months may require scope prioritization. Mention of sustainability — who owns the process after you leave?"
+  },
+  {
+    id: "bpi-hard-002",
+    category: "Business Process Innovation",
+    catKey: "bpi",
+    difficulty: "hard",
+    question: "A client's executive team is divided on whether to invest in process improvement or new technology. Both have merit. How do you facilitate this decision?",
+    answer: "Strong answers: facilitate data-driven comparison (cost-benefit analysis for both), identify whether the process problem is structural or tool-based, propose hybrid approach if appropriate, use frameworks like impact/effort matrix. Show political savvy — understand each executive's priorities and frame the recommendation accordingly. Sometimes the answer is 'fix the process first, then the technology amplifies the improvement.'"
+  },
+  {
+    id: "em-easy-001",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "easy",
+    question: "What does it mean to create a 'Raving Fan' client?",
+    answer: "A Raving Fan client is one who doesn't just approve of your work — they actively advocate for you. They refer you to others, expand scope without being asked, and defend your team when challenges arise. It's built through consistently exceeding expectations, proactive communication, genuine care for their success, and delivering measurable value."
+  },
+  {
+    id: "em-easy-002",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "easy",
+    question: "What is the VOPAR framework?",
+    answer: "VOPAR stands for Visualize, Organize, Prioritize, Actualize, Revise. It's a strategic management framework for project execution: Visualize the end state, Organize resources and plans, Prioritize what matters most, Actualize through execution, and Revise based on feedback and results. It's iterative — the Revise step feeds back into Visualize."
+  },
+  {
+    id: "em-easy-003",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "easy",
+    question: "What are the 5 Functions of a Team?",
+    answer: "Based on Patrick Lencioni's model: 1) Trust — vulnerability-based trust among members. 2) Conflict — healthy, productive debate around ideas. 3) Commitment — clarity and buy-in after debate. 4) Accountability — peer-to-peer accountability for performance. 5) Results — focus on collective outcomes over individual goals. Dysfunction at any level undermines everything above it."
+  },
+  {
+    id: "em-easy-004",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "easy",
+    question: "What is the difference between Agile and Traditional (Waterfall) project management?",
+    answer: "Waterfall is sequential — requirements → design → build → test → deploy. Best for well-defined projects with stable requirements. Agile is iterative — work in sprints, deliver incrementally, adapt to change. Best for projects with evolving requirements or where early feedback is valuable. Most modern PM uses a hybrid approach depending on the project's nature."
+  },
+  {
+    id: "em-medium-001",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "medium",
+    question: "Give an example of a time you turned a skeptical client into a long-term advocate for your organization.",
+    answer: "STAR format. Look for: understanding the root of skepticism (bad past experience, trust deficit, unclear value proposition), specific actions taken to rebuild trust (transparency, quick wins, over-communication), measurable outcome (expanded engagement, referral, renewal). The best answers show empathy first, strategy second."
+  },
+  {
+    id: "em-medium-002",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "medium",
+    question: "Describe a situation where you had to balance a client's demand for more scope with the company's need to maintain profitability.",
+    answer: "Strong answers show: honest conversation with client about trade-offs, creative solutions (phase scope, adjust timeline, propose change order), internal alignment with leadership on margins, protecting the relationship while protecting the business. Avoid: just saying yes to everything or rigidly saying no."
+  },
+  {
+    id: "em-medium-003",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "medium",
+    question: "Tell me about a high-stakes conflict between a team member and a client executive. How did you intervene?",
+    answer: "Look for: immediate de-escalation, private conversations with both parties, understanding both perspectives, protecting the relationship while supporting the team member, documented follow-up. Strong answers show the ability to hold two truths simultaneously — the client may have a valid concern AND the team member may have been right."
+  },
+  {
+    id: "em-medium-004",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "medium",
+    question: "How do you ensure full utilization of your team while maintaining quality and avoiding burnout?",
+    answer: "Key elements: resource planning with buffer, skill-based assignment (right person for right task), regular 1:1 check-ins on workload, cross-training for flexibility, proactive pipeline management so transitions between engagements are smooth. Acknowledge the tension — 100% utilization is a myth; aim for sustainable productivity."
+  },
+  {
+    id: "em-hard-001",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "hard",
+    question: "You're managing a portfolio of 3 complex engagements simultaneously. One is failing, one is at risk, and one is thriving. How do you allocate your time and resources?",
+    answer: "Strong answers: triage — assess the failing engagement (is it saveable? what's the root cause?), protect the thriving one (don't rob Peter to pay Paul), develop a recovery plan for at-risk. Show prioritization framework, escalation criteria, and the ability to make hard calls (sometimes letting a failing engagement go is the right answer). Communicate transparently with leadership about trade-offs."
+  },
+  {
+    id: "em-hard-002",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "hard",
+    question: "A client wants to bring in a competitor to handle part of the engagement you're managing. How do you respond?",
+    answer: "Strong answers show confidence without defensiveness: understand why (gap in your offering? relationship issue? client politics?), assess whether collaboration or competition serves the client best, protect your scope while remaining client-focused. The worst answer is to take it personally. The best answer is to use it as feedback and either fill the gap or collaborate gracefully."
+  },
+  {
+    id: "em-hard-003",
+    category: "Engagement Management",
+    catKey: "em",
+    difficulty: "hard",
+    question: "You discover that a key team member on your engagement has been underperforming and the client has noticed. The team member is well-liked internally. What do you do?",
+    answer: "Strong answers: have a direct, private conversation with the team member (specific examples, not vague feedback), understand if there's a root cause (personal issues, skill gap, wrong fit), create a performance improvement plan with clear timeline, proactively communicate with the client that you're addressing it (without throwing the person under the bus). If no improvement, make the hard call to reassign."
+  },
+  {
+    id: "core-easy-001",
+    category: "Core Values & Leadership",
+    catKey: "core",
+    difficulty: "easy",
+    question: "How do you prioritize 'WE' over 'ME' when working in a high-pressure environment?",
+    answer: "Look for: examples of putting team success above personal recognition, sharing credit, asking for help when needed, supporting colleagues who are struggling, making decisions that benefit the group even at personal cost. Red flag: answers that are entirely about individual achievement."
+  },
+  {
+    id: "core-medium-001",
+    category: "Core Values & Leadership",
+    catKey: "core",
+    difficulty: "medium",
+    question: "Describe a time you had to 'fail fast.' What did you learn, and how did you communicate the failure to stakeholders?",
+    answer: "Strong answers show: willingness to acknowledge failure quickly rather than hiding it, specific learning extracted, transparent communication with stakeholders (what happened, why, what's different now), evidence that the failure led to a better outcome. The best answers show systemic thinking — not just fixing the symptom but preventing recurrence."
+  },
+  {
+    id: "core-medium-002",
+    category: "Core Values & Leadership",
+    catKey: "core",
+    difficulty: "medium",
+    question: "How do you build trust with a new team you're leading for the first time?",
+    answer: "Key elements: listen first (understand the team's history, challenges, strengths), be transparent about your style and expectations, deliver on small commitments early, show vulnerability (admit what you don't know), create psychological safety (make it safe to disagree), invest in 1:1 relationships. Trust is earned through consistency over time, not declared."
+  },
+  {
+    id: "core-hard-001",
+    category: "Core Values & Leadership",
+    catKey: "core",
+    difficulty: "hard",
+    question: "You've been asked to lead a transformation initiative that you personally disagree with. Senior leadership is committed to it. How do you proceed?",
+    answer: "Strong answers: voice your concerns constructively and with data (disagree and commit), once the decision is made, lead with full commitment (don't undermine), find aspects you can genuinely support, be transparent with your team about the direction without editorializing, continuously provide feedback through proper channels. The worst answer: passive-aggressive compliance or public disagreement."
+  },
+  {
+    id: "resume-easy-001",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "easy",
+    question: "You managed 20 Technical Program Managers across 10 global locations. How did you maintain alignment and communication across that many time zones?",
+    answer: "Strong answers include: structured cadence (daily standups for urgent items, weekly syncs, monthly strategy reviews), async communication tools (Jira, Smartsheet, Miro, Slack/Teams), clear RACI for decision-making, documented decisions accessible to all time zones, rotating meeting times to share the burden of off-hours calls, and empowering regional leads to make local decisions within guardrails."
+  },
+  {
+    id: "resume-easy-002",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "easy",
+    question: "Tell me about your experience with cloud platforms (AWS, Azure). How did you leverage these in your program management role?",
+    answer: "This tests whether the candidate understands the technology they managed, not just the management layer. Strong answers: understanding of cloud architecture concepts (data lakes, analytics pipelines, microservices), ability to translate technical decisions into business impact, experience with cloud cost management, and understanding of deployment/release processes in cloud environments."
+  },
+  {
+    id: "resume-easy-003",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "easy",
+    question: "You have a B.S. in Computer Science. How has your technical background helped you as a program manager?",
+    answer: "Strong answers: credibility with engineering teams (you speak their language), ability to evaluate technical trade-offs without relying entirely on engineers, understanding when estimates are realistic vs padded, ability to identify technical risks early. Also: knowing when to trust the experts and not micromanage the technical decisions."
+  },
+  {
+    id: "resume-medium-001",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "medium",
+    question: "You led the migration of LaserJet firmware involving 350 engineers across 9 global sites and delivered 400+ features. Walk me through how you planned and tracked a migration of that scale.",
+    answer: "Look for: phased approach (discovery \u2192 planning \u2192 execution \u2192 validation), feature inventory and gap analysis, dependency mapping between teams/sites, risk register with mitigation plans, milestone tracking with clear ownership, escalation framework, regular stakeholder updates. Strong answers acknowledge what went wrong and how they adapted \u2014 no migration of that scale goes perfectly."
+  },
+  {
+    id: "resume-medium-002",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "medium",
+    question: "You drove cybersecurity process improvements that improved efficiency by 50%. How did you measure that, and how did you sustain it?",
+    answer: "Strong answers: defined baseline metrics before changes (time to resolve, incidents per month, training completion rates), implemented specific process changes (streamlined liaison workflow, automated training tracking, improved tooling), measured post-implementation with same metrics, created standard operating procedures to sustain gains. 50% is a big claim \u2014 the answer should be specific enough to be believable."
+  },
+  {
+    id: "resume-medium-003",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "medium",
+    question: "You orchestrated HP's first consumer print AI solutions. What was the biggest challenge in launching a first-of-its-kind product?",
+    answer: "Look for: navigating ambiguity (no playbook for something new), aligning 4 cross-functional departments with different priorities, managing executive expectations, balancing innovation speed with quality, market timing pressure. Strong answers show how they created structure around uncertainty \u2014 frameworks for decision-making when there is no precedent."
+  },
+  {
+    id: "resume-medium-004",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "medium",
+    question: "You created an IP training program delivered to 1,000+ participants. How did you design it, and how did you measure its effectiveness?",
+    answer: "Strong answers: identified the knowledge gap (why was training needed?), designed curriculum with subject matter experts, piloted with a small group before scaling, used multiple delivery formats (live, recorded, documentation), measured effectiveness through assessments, feedback surveys, and downstream metrics (IP filings, compliance rates). Scaling to 1,000+ requires organizational buy-in \u2014 how did she get it?"
+  },
+  {
+    id: "resume-medium-005",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "medium",
+    question: "You coordinated the retirement of 3 legacy database systems while building a new Data Lake. How do you manage the transition period where both old and new systems are running?",
+    answer: "Look for: parallel running strategy, data migration and validation plan, rollback plan if new system fails, stakeholder communication (who uses the old systems and when do they switch?), phased retirement (not all at once), data integrity verification. Strong answers acknowledge the political challenge \u2014 people are attached to their old tools."
+  },
+  {
+    id: "resume-hard-001",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "hard",
+    question: "You managed a multi-million dollar R&D firmware budget. Walk me through how you made a difficult budget trade-off where you had to cut or defer something important.",
+    answer: "Strong answers: transparent criteria for prioritization (business impact, technical risk, strategic alignment), stakeholder input before the decision, clear communication about what was cut and why, contingency plan if the deferred work becomes urgent. The best answers show the emotional intelligence required \u2014 cutting someone's project is personal, even when it's the right business call."
+  },
+  {
+    id: "resume-hard-002",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "hard",
+    question: "You led 65 engineers, 5 managers, and 5 architects during a legacy-to-modern architecture transition. How did you handle resistance from teams who were invested in the legacy system?",
+    answer: "Look for: empathy (acknowledging that people built their careers on the legacy system), involving skeptics early (make them part of the solution), demonstrating value of the new architecture with proof points, providing training and support, celebrating the legacy team's contributions while moving forward. The worst approach: mandating change from the top without addressing the human side."
+  },
+  {
+    id: "resume-hard-003",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "hard",
+    question: "You served as organization-wide decision maker for conflict resolution and priority trade-offs. Describe the hardest call you've had to make and how you approached it.",
+    answer: "This is a character question. Strong answers: specific example with real stakes, describe the decision framework used, acknowledge the trade-offs and who was impacted, explain how they communicated the decision (especially to those who disagreed), reflect on whether they would make the same call again. Red flag: answers that make every decision sound easy or unanimous."
+  },
+  {
+    id: "resume-hard-004",
+    category: "Resume-Based",
+    catKey: "resume",
+    difficulty: "hard",
+    question: "You've spent 15+ years at one company. A common concern is adaptability \u2014 how would you convince a new employer that your skills transfer to a different industry and culture?",
+    answer: "This is THE question for long-tenure candidates. Strong answers: highlight the diversity of roles within HP (firmware \u2192 BI/DaaS \u2192 cloud/AI \u2192 strategic PM), show examples of adapting to new domains quickly, emphasize transferable frameworks (PMO, Lean Six Sigma, stakeholder management), point to board leadership and community work as evidence of breadth. Acknowledge the concern directly rather than being defensive."
+  },
+  {
+    id: "behavioral-easy-001",
+    category: "Behavioral / STAR",
+    catKey: "behavioral",
+    difficulty: "easy",
+    question: "Tell me about a time you mentored someone who went on to succeed in a leadership role.",
+    answer: "Look for: genuine investment in the person's growth (not just delegating work), specific actions taken (coaching conversations, stretch assignments, sponsorship), evidence of the mentee's growth, and pride in their success. Strong answers also show what the mentor learned from the relationship. Her resume mentions mentoring STEM students, Women in Tech, PMs, and engineers."
+  },
+  {
+    id: "behavioral-medium-001",
+    category: "Behavioral / STAR",
+    catKey: "behavioral",
+    difficulty: "medium",
+    question: "Describe a situation where you had to deliver bad news to an executive. How did you frame it?",
+    answer: "Strong answers: led with the impact (not buried the lede), presented facts without editorializing, came with options/recommendations (not just the problem), managed the emotional reaction, followed up with a recovery plan. The best answers show that the exec trusted them MORE after the bad news because of how it was handled."
+  },
+  {
+    id: "behavioral-medium-002",
+    category: "Behavioral / STAR",
+    catKey: "behavioral",
+    difficulty: "medium",
+    question: "Tell me about a time two of your partner organizations had conflicting priorities. How did you resolve it?",
+    answer: "Look for: understanding both sides' underlying needs (not just positions), finding shared goals, escalating only when necessary, creative solutions that partially satisfied both, transparent communication about trade-offs. Strong answers show the ability to be a neutral facilitator rather than taking sides."
+  },
+  {
+    id: "behavioral-hard-001",
+    category: "Behavioral / STAR",
+    catKey: "behavioral",
+    difficulty: "hard",
+    question: "Tell me about a project that failed despite your best efforts. What happened, what did you learn, and what would you do differently?",
+    answer: "This tests self-awareness and growth mindset. Strong answers: honest about what went wrong (not blaming others), specific about their own contribution to the failure, concrete lessons extracted, evidence that those lessons changed future behavior. Red flags: no failures to share (everyone has them), blaming entirely external factors, or superficial lessons."
+  }
+];
+
+// ── STATE ── //
+let displayOrder = QUESTIONS.map((_, i) => i);
+let activeCat  = 'all';
+let activeDiff = 'all';
+let reviewed   = new Set();
+
+const STORAGE = {
+  load() {
+    try {
+      const raw = localStorage.getItem(STORAGE_KEY);
+      if (raw) reviewed = new Set(JSON.parse(raw));
+    } catch(e) {}
+  },
+  save() {
+    try {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify([...reviewed]));
+    } catch(e) {}
+  }
+};
+
+// ── FILTER ── //
+function filteredIndices() {
+  return displayOrder.filter(i => {
+    const q = QUESTIONS[i];
+    const catMatch  = activeCat  === 'all' || q.catKey     === activeCat;
+    const diffMatch = activeDiff === 'all' || q.difficulty === activeDiff;
+    return catMatch && diffMatch;
+  });
+}
+
+// ── RENDER ── //
+function catBadgeClass(catKey) {
+  return { bpi: 'badge-bpi', em: 'badge-em', core: 'badge-core', resume: 'badge-resume', behavioral: 'badge-behavioral' }[catKey] || '';
+}
+function diffBadgeClass(diff) {
+  return { easy: 'badge-easy', medium: 'badge-medium', hard: 'badge-hard' }[diff] || '';
+}
+function catLabel(catKey) {
+  return { bpi: 'BPI', em: 'Engagement', core: 'Core Values', resume: 'Resume-Based', behavioral: 'Behavioral' }[catKey] || catKey;
+}
+function diffLabel(diff) {
+  return diff.charAt(0).toUpperCase() + diff.slice(1);
+}
+
+function renderCards() {
+  const list    = document.getElementById('cardList');
+  const indices = filteredIndices();
+
+  document.getElementById('shownCount').textContent = indices.length;
+  updateStats();
+
+  if (indices.length === 0) {
+    list.innerHTML = '<div class="no-results">No questions match those filters. Try adjusting them above.</div>';
+    return;
+  }
+
+  list.innerHTML = indices.map(i => {
+    const q = QUESTIONS[i];
+    const isReviewed = reviewed.has(q.id);
+    return `
+      <div class="card${isReviewed ? ' reviewed' : ''}" data-id="${q.id}">
+        <div class="card-top">
+          <div class="badge-row">
+            <span class="badge ${catBadgeClass(q.catKey)}">${catLabel(q.catKey)}</span>
+            <span class="badge ${diffBadgeClass(q.difficulty)}">${diffLabel(q.difficulty)}</span>
+          </div>
+          <label class="review-checkbox-wrapper" title="Mark as reviewed">
+            <input type="checkbox" data-qid="${q.id}" ${isReviewed ? 'checked' : ''}/>
+            Reviewed
+          </label>
+        </div>
+        <div class="question-text">${escHtml(q.question)}</div>
+        <button class="show-answer-btn" data-qid="${q.id}">
+          <span class="btn-icon">▶</span> Show Answer
+        </button>
+        <div class="answer-section" id="ans-${q.id}">${escHtml(q.answer)}</div>
+      </div>
+    `;
+  }).join('');
+
+  // attach events
+  list.querySelectorAll('input[type="checkbox"]').forEach(cb => {
+    cb.addEventListener('change', onCheckbox);
+  });
+  list.querySelectorAll('.show-answer-btn').forEach(btn => {
+    btn.addEventListener('click', onToggleAnswer);
+  });
+}
+
+function escHtml(str) {
+  return str
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;');
+}
+
+function updateStats() {
+  const total     = QUESTIONS.length;
+  const revCount  = reviewed.size;
+  const pct       = total > 0 ? Math.round((revCount / total) * 100) : 0;
+  document.getElementById('reviewedCount').textContent = revCount;
+  document.getElementById('totalCount').textContent    = total;
+  document.getElementById('progressFill').style.width  = pct + '%';
+}
+
+// ── EVENTS ── //
+function onCheckbox(e) {
+  const qid  = e.target.dataset.qid;
+  const card = e.target.closest('.card');
+  if (e.target.checked) {
+    reviewed.add(qid);
+    card.classList.add('reviewed');
+  } else {
+    reviewed.delete(qid);
+    card.classList.remove('reviewed');
+  }
+  STORAGE.save();
+  updateStats();
+}
+
+function onToggleAnswer(e) {
+  const btn = e.currentTarget;
+  const qid = btn.dataset.qid;
+  const ans = document.getElementById('ans-' + qid);
+  const icon = btn.querySelector('.btn-icon');
+  const isOpen = ans.classList.contains('open');
+  if (isOpen) {
+    ans.classList.remove('open');
+    btn.classList.remove('open');
+    icon.textContent = '▶';
+    btn.childNodes[btn.childNodes.length - 1].textContent = ' Show Answer';
+  } else {
+    ans.classList.add('open');
+    btn.classList.add('open');
+    icon.textContent = '▼';
+    btn.childNodes[btn.childNodes.length - 1].textContent = ' Hide Answer';
+  }
+}
+
+// ── FILTER BUTTONS ── //
+document.querySelectorAll('[data-cat]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-cat]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeCat = btn.dataset.cat;
+    renderCards();
+  });
+});
+
+document.querySelectorAll('[data-diff]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-diff]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    activeDiff = btn.dataset.diff;
+    renderCards();
+  });
+});
+
+// ── SHUFFLE ── //
+document.getElementById('shuffleBtn').addEventListener('click', () => {
+  for (let i = displayOrder.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [displayOrder[i], displayOrder[j]] = [displayOrder[j], displayOrder[i]];
+  }
+  renderCards();
+});
+
+// ── INIT ── //
+STORAGE.load();
+renderCards();
+</script>
+</body>
+</html>
