@@ -1,0 +1,828 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🔍 PM Job Search — Flossie</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --surface: #161b22;
+      --surface-hover: #1c2128;
+      --border: #30363d;
+      --text: #c9d1d9;
+      --text-bright: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #bc8cff;
+      --success: #3fb950;
+      --blue: #58a6ff;
+      --warning: #e3b341;
+      --gray: #8b949e;
+      --error: #f85149;
+      --purple: #bc8cff;
+      --cyan: #39d2c0;
+      --pink: #f778ba;
+      --boise-glow: rgba(188, 140, 255, 0.08);
+      --boise-border: rgba(188, 140, 255, 0.3);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.5;
+      min-height: 100vh;
+    }
+
+    /* ── TOP NAV ── */
+    .nav.no-print {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0.6rem 1.5rem;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .nav h1 { font-size: 1.15rem; font-weight: 700; color: var(--text-bright); }
+    .nav h1 span { margin-right: 0.4rem; }
+    .nav-links { display: flex; gap: 1rem; align-items: center; }
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--accent); }
+    .nav-links a.active { color: var(--accent); font-weight: 600; }
+    .clock {
+      font-family: 'SF Mono', Consolas, monospace;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-left: 0.5rem;
+      padding: 0.2rem 0.6rem;
+      background: var(--bg);
+      border-radius: 6px;
+    }
+
+    .container {
+      max-width: 1300px;
+      margin: 0 auto;
+      padding: 1.25rem;
+    }
+
+    /* ── HEADER ── */
+    .page-header {
+      text-align: center;
+      margin-bottom: 1.25rem;
+    }
+    .page-header h2 {
+      font-size: 1.6rem;
+      color: var(--text-bright);
+      margin-bottom: 0.25rem;
+    }
+    .page-header .subtitle {
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: flex;
+      gap: 0.75rem;
+      justify-content: center;
+      flex-wrap: wrap;
+      margin-bottom: 1.25rem;
+    }
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 0.75rem 1.25rem;
+      text-align: center;
+      min-width: 120px;
+      cursor: pointer;
+      transition: all 0.2s;
+      user-select: none;
+    }
+    .stat-card:hover { border-color: var(--accent); transform: translateY(-2px); }
+    .stat-card.active { border-color: var(--accent); background: rgba(188, 140, 255, 0.08); }
+    .stat-card .stat-icon { font-size: 1.3rem; margin-bottom: 0.15rem; }
+    .stat-card .stat-val {
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: var(--text-bright);
+      line-height: 1.2;
+    }
+    .stat-card .stat-label {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    /* ── FILTERS ROW ── */
+    .filters-row {
+      display: flex;
+      gap: 0.75rem;
+      margin-bottom: 1.25rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .filter-group {
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .filter-group label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      letter-spacing: 0.05em;
+    }
+    .filter-select, .filter-input {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      outline: none;
+      transition: border-color 0.2s;
+      min-width: 140px;
+    }
+    .filter-select:focus, .filter-input:focus { border-color: var(--accent); }
+    .filter-select option { background: var(--surface); color: var(--text); }
+    .filter-input { min-width: 200px; }
+    .filter-input::placeholder { color: var(--text-muted); }
+
+    .toggle-btn {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-end;
+      user-select: none;
+    }
+    .toggle-btn:hover { border-color: var(--accent); }
+    .toggle-btn.active {
+      background: rgba(188, 140, 255, 0.15);
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .scan-btn {
+      background: var(--surface);
+      border: 1px solid var(--success);
+      border-radius: 8px;
+      color: var(--success);
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      align-self: flex-end;
+      font-weight: 600;
+    }
+    .scan-btn:hover {
+      background: var(--success);
+      color: var(--bg);
+    }
+    .scan-btn:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .sort-select {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: var(--text);
+      padding: 0.5rem 0.75rem;
+      font-size: 0.85rem;
+      outline: none;
+      margin-left: auto;
+      align-self: flex-end;
+    }
+    .sort-select:focus { border-color: var(--accent); }
+    .sort-select option { background: var(--surface); }
+
+    /* ── RESULTS INFO ── */
+    .results-info {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .results-info .count { color: var(--text-bright); font-weight: 600; }
+    .last-scan { font-size: 0.8rem; }
+
+    /* ── FRESHNESS BANNER ── */
+    .freshness-banner {
+      display: none;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      font-size: 0.85rem;
+      margin-bottom: 1rem;
+    }
+    .freshness-banner.stale {
+      display: flex;
+      background: rgba(210, 153, 34, 0.1);
+      border: 1px solid rgba(210, 153, 34, 0.3);
+      color: var(--warning);
+    }
+    .freshness-banner.fresh {
+      display: flex;
+      background: rgba(63, 185, 80, 0.08);
+      border: 1px solid rgba(63, 185, 80, 0.2);
+      color: var(--success);
+    }
+    .freshness-banner .freshness-icon { font-size: 1.1rem; }
+    .freshness-banner .freshness-text { flex: 1; }
+
+    /* ── JOB CARDS GRID ── */
+    .jobs-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 0.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .job-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1rem 1.15rem;
+      transition: all 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+    .job-card:hover { border-color: #444c56; transform: translateY(-1px); }
+    .job-card.boise-job {
+      border-color: var(--boise-border);
+      background: var(--boise-glow);
+    }
+    .job-card.boise-job:hover { border-color: var(--accent); }
+    .job-card.status-interested { border-left: 3px solid var(--warning); }
+    .job-card.status-applied { border-left: 3px solid var(--success); }
+    .job-card.status-skip { opacity: 0.45; }
+
+    .job-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 0.75rem;
+    }
+
+    .score-badge {
+      flex-shrink: 0;
+      width: 44px;
+      height: 44px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 1rem;
+      color: #fff;
+    }
+    .score-hot { background: var(--success); }
+    .score-good { background: var(--blue); }
+    .score-ok { background: var(--warning); color: #1a1a1a; }
+    .score-low { background: var(--gray); }
+
+    .job-info { flex: 1; min-width: 0; }
+    .job-title {
+      font-weight: 600;
+      font-size: 0.95rem;
+      color: var(--text-bright);
+      text-decoration: none;
+      line-height: 1.3;
+      display: block;
+    }
+    .job-title:hover { color: var(--accent); }
+    .job-company {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      margin-top: 0.15rem;
+    }
+    .job-location {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+    .job-location .boise-pin { color: var(--accent); }
+    .job-posted {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
+
+    .job-keywords {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem;
+    }
+    .keyword-tag {
+      background: rgba(188, 140, 255, 0.1);
+      border: 1px solid rgba(188, 140, 255, 0.2);
+      color: var(--accent);
+      border-radius: 12px;
+      padding: 0.1rem 0.5rem;
+      font-size: 0.72rem;
+      white-space: nowrap;
+    }
+
+    .job-actions {
+      display: flex;
+      gap: 0.4rem;
+      margin-top: auto;
+    }
+    .action-btn {
+      flex: 1;
+      padding: 0.35rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text-muted);
+      font-size: 0.75rem;
+      cursor: pointer;
+      transition: all 0.2s;
+      text-align: center;
+    }
+    .action-btn:hover { border-color: var(--accent); color: var(--text); }
+    .action-btn.selected { font-weight: 600; }
+    .action-btn.selected-interested {
+      background: rgba(227, 179, 65, 0.15);
+      border-color: var(--warning);
+      color: var(--warning);
+    }
+    .action-btn.selected-applied {
+      background: rgba(63, 185, 80, 0.15);
+      border-color: var(--success);
+      color: var(--success);
+    }
+    .action-btn.selected-skip {
+      background: rgba(139, 148, 158, 0.15);
+      border-color: var(--gray);
+      color: var(--gray);
+    }
+
+    .job-id {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      font-family: 'SF Mono', Consolas, monospace;
+    }
+
+    /* ── EMPTY STATE ── */
+    .empty-state {
+      text-align: center;
+      padding: 3rem 1rem;
+      color: var(--text-muted);
+    }
+    .empty-state .big-icon { font-size: 3rem; margin-bottom: 0.5rem; }
+    .empty-state p { font-size: 1rem; }
+
+    /* ── FOOTER ── */
+    .mc-footer {
+      text-align: center;
+      padding: 1rem;
+      color: var(--text-muted);
+      font-size: 0.78rem;
+      font-family: 'SF Mono', Consolas, monospace;
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      .jobs-grid { grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); }
+      .stats-bar { gap: 0.5rem; }
+      .stat-card { min-width: 100px; padding: 0.6rem 1rem; }
+    }
+    @media (max-width: 600px) {
+      .container { padding: 0.75rem; }
+      .jobs-grid { grid-template-columns: 1fr; }
+      .filters-row { flex-direction: column; }
+      .filter-select, .filter-input { min-width: 100%; }
+      .sort-select { margin-left: 0; width: 100%; }
+      .nav-links { display: none; }
+      .stat-card { min-width: 80px; padding: 0.5rem 0.6rem; }
+      .stat-card .stat-val { font-size: 1.3rem; }
+    }
+
+    @media print { .nav.no-print { display: none; } }
+  </style>
+</head>
+<body>
+  <nav class="nav no-print">
+    <h1><span>👔</span> PM Job Search — Flossie</h1>
+    <div class="nav-links">
+      <a href="/pm-lead/">🎓 Interview Prep</a>
+      <a href="/pm/" class="active">👔 PM Jobs</a>
+      <span class="clock" id="clock"></span>
+    </div>
+  </nav>
+
+  <div class="container">
+    <!-- Header -->
+    <div class="page-header">
+      <h2>👔 PM Job Search — Flossie</h2>
+      <p class="subtitle">Program &amp; Project Management Opportunities</p>
+    </div>
+
+    <!-- Freshness Banner -->
+    <div class="freshness-banner" id="freshness-banner">
+      <span class="freshness-icon" id="freshness-icon"></span>
+      <span class="freshness-text" id="freshness-text"></span>
+    </div>
+
+    <!-- Stats Bar -->
+    <div class="stats-bar" id="stats-bar">
+      <div class="stat-card" data-filter="all" id="stat-all">
+        <div class="stat-icon">📊</div>
+        <div class="stat-val" id="sv-total">—</div>
+        <div class="stat-label">Total Jobs</div>
+      </div>
+      <div class="stat-card" data-filter="boise" id="stat-boise">
+        <div class="stat-icon">📍</div>
+        <div class="stat-val" id="sv-boise">—</div>
+        <div class="stat-label">Boise / Idaho</div>
+      </div>
+      <div class="stat-card" data-filter="hot" id="stat-hot">
+        <div class="stat-icon">🔥</div>
+        <div class="stat-val" id="sv-hot">—</div>
+        <div class="stat-label">Score 80+</div>
+      </div>
+      <div class="stat-card" data-filter="good" id="stat-good">
+        <div class="stat-icon">👍</div>
+        <div class="stat-val" id="sv-good">—</div>
+        <div class="stat-label">Score 50-79</div>
+      </div>
+      <div class="stat-card" data-filter="companies" id="stat-companies">
+        <div class="stat-icon">🏢</div>
+        <div class="stat-val" id="sv-companies">—</div>
+        <div class="stat-label">Companies</div>
+      </div>
+    </div>
+
+    <!-- Filters Row -->
+    <div class="filters-row">
+      <div class="filter-group">
+        <label>Company</label>
+        <select class="filter-select" id="filter-company">
+          <option value="">All Companies</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Location</label>
+        <select class="filter-select" id="filter-location">
+          <option value="">All Locations</option>
+          <option value="boise">Boise / Idaho</option>
+          <option value="remote">Remote</option>
+          <option value="other">Other</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Min Score</label>
+        <select class="filter-select" id="filter-score">
+          <option value="0">All Scores</option>
+          <option value="40">40+</option>
+          <option value="50">50+</option>
+          <option value="60">60+</option>
+          <option value="70">70+</option>
+          <option value="80">80+</option>
+        </select>
+      </div>
+      <div class="filter-group">
+        <label>Search</label>
+        <input type="text" class="filter-input" id="filter-search" placeholder="Search title, keywords...">
+      </div>
+      <div class="filter-group">
+        <label>Status</label>
+        <select class="filter-select" id="filter-status">
+          <option value="">All Statuses</option>
+          <option value="interested">⭐ Interested</option>
+          <option value="applied">✅ Applied</option>
+          <option value="skip">❌ Skipped</option>
+          <option value="none">🆕 No Status</option>
+        </select>
+      </div>
+      <button class="toggle-btn" id="boise-toggle">📍 Boise / Remote</button>
+
+      <div class="filter-group" style="margin-left:auto;">
+        <label>Sort By</label>
+        <select class="sort-select" id="sort-select">
+          <option value="score-desc">Score ↓</option>
+          <option value="score-asc">Score ↑</option>
+          <option value="company-asc">Company A-Z</option>
+          <option value="company-desc">Company Z-A</option>
+          <option value="title-asc">Title A-Z</option>
+          <option value="title-desc">Title Z-A</option>
+          <option value="date-desc">Newest First</option>
+          <option value="date-asc">Oldest First</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Results Info -->
+    <div class="results-info">
+      <span>Showing <span class="count" id="showing-count">0</span> jobs</span>
+      <span class="last-scan" id="last-scan">Last scan: unknown</span>
+    </div>
+
+    <!-- Job Cards -->
+    <div class="jobs-grid" id="jobs-grid"></div>
+
+    <!-- Empty State -->
+    <div class="empty-state" id="empty-state" style="display:none;">
+      <div class="big-icon">👔</div>
+      <p>No PM jobs match your filters</p>
+    </div>
+  </div>
+
+  <div class="mc-footer">
+    <span id="footer-time"></span> · Felix PM Job Search — Flossie
+  </div>
+
+  <script>
+    // ── State ──
+    let allJobs = [];
+    let jobStatuses = {};
+    let activeStatFilter = 'all';
+
+    // ── Load localStorage ──
+    function loadStatuses() {
+      try {
+        const raw = localStorage.getItem('job-statuses-flossie');
+        if (raw) jobStatuses = JSON.parse(raw);
+      } catch(e) {}
+    }
+    function saveStatuses() {
+      localStorage.setItem('job-statuses-flossie', JSON.stringify(jobStatuses));
+    }
+
+    // ── Clock ──
+    function updateClock() {
+      const now = new Date();
+      const t = now.toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit', timeZone: 'America/Boise' });
+      document.getElementById('clock').textContent = t;
+      const full = now.toLocaleString('en-US', { weekday: 'short', month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit', timeZone: 'America/Boise' });
+      document.getElementById('footer-time').textContent = full;
+    }
+    updateClock();
+    setInterval(updateClock, 15000);
+
+    // ── Score badge class ──
+    function scoreClass(s) {
+      if (s >= 80) return 'score-hot';
+      if (s >= 60) return 'score-good';
+      if (s >= 40) return 'score-ok';
+      return 'score-low';
+    }
+
+    // ── Location helpers ──
+    function isBoise(job) {
+      return !!job.isBoise || /boise|idaho/i.test(job.location);
+    }
+    function isRemote(job) {
+      return /remote/i.test(job.location);
+    }
+
+    // ── Populate company filter ──
+    function populateCompanyFilter() {
+      const companies = [...new Set(allJobs.map(j => j.company))].sort();
+      const sel = document.getElementById('filter-company');
+      companies.forEach(c => {
+        const opt = document.createElement('option');
+        opt.value = c;
+        opt.textContent = c;
+        sel.appendChild(opt);
+      });
+    }
+
+    // ── Update stats ──
+    function updateStats() {
+      document.getElementById('sv-total').textContent = allJobs.length;
+      document.getElementById('sv-boise').textContent = allJobs.filter(isBoise).length;
+      document.getElementById('sv-hot').textContent = allJobs.filter(j => j.score >= 80).length;
+      document.getElementById('sv-good').textContent = allJobs.filter(j => j.score >= 50 && j.score < 80).length;
+      document.getElementById('sv-companies').textContent = new Set(allJobs.map(j => j.company)).size;
+    }
+
+    // ── Filter & Sort ──
+    function getFiltered() {
+      const company = document.getElementById('filter-company').value;
+      const location = document.getElementById('filter-location').value;
+      const minScore = parseInt(document.getElementById('filter-score').value) || 0;
+      const search = document.getElementById('filter-search').value.toLowerCase().trim();
+      const boiseOnly = document.getElementById('boise-toggle').classList.contains('active');
+      const statusFilter = document.getElementById('filter-status').value;
+
+      let filtered = allJobs.filter(j => {
+        if (company && j.company !== company) return false;
+        if (location === 'boise' && !isBoise(j)) return false;
+        if (location === 'remote' && !isRemote(j)) return false;
+        if (location === 'other' && (isBoise(j) || isRemote(j))) return false;
+        if (j.score < minScore) return false;
+        if (boiseOnly && !isBoise(j) && !isRemote(j)) return false;
+        if (statusFilter) {
+          const s = jobStatuses[j.id] || '';
+          if (statusFilter === 'none' && s) return false;
+          if (statusFilter !== 'none' && s !== statusFilter) return false;
+        }
+        if (search) {
+          const hay = (j.title + ' ' + j.company + ' ' + (j.keywords || []).join(' ')).toLowerCase();
+          if (!hay.includes(search)) return false;
+        }
+        // Stat card filters
+        if (activeStatFilter === 'boise' && !isBoise(j)) return false;
+        if (activeStatFilter === 'hot' && j.score < 80) return false;
+        if (activeStatFilter === 'good' && (j.score < 50 || j.score >= 80)) return false;
+        return true;
+      });
+
+      // Sort
+      const sort = document.getElementById('sort-select').value;
+      const [field, dir] = sort.split('-');
+      filtered.sort((a, b) => {
+        let cmp = 0;
+        if (field === 'score') cmp = a.score - b.score;
+        else if (field === 'company') cmp = a.company.localeCompare(b.company);
+        else if (field === 'title') cmp = a.title.localeCompare(b.title);
+        else if (field === 'date') cmp = (a.posted || '').localeCompare(b.posted || '');
+        return dir === 'desc' ? -cmp : cmp;
+      });
+
+      return filtered;
+    }
+
+    // ── Render ──
+    function render() {
+      const jobs = getFiltered();
+      const grid = document.getElementById('jobs-grid');
+      const empty = document.getElementById('empty-state');
+
+      document.getElementById('showing-count').textContent = jobs.length;
+
+      if (!jobs.length) {
+        grid.innerHTML = '';
+        empty.style.display = 'block';
+        return;
+      }
+      empty.style.display = 'none';
+
+      grid.innerHTML = jobs.map(j => {
+        const status = jobStatuses[j.id] || '';
+        const boiseClass = isBoise(j) ? ' boise-job' : '';
+        const statusClass = status ? ` status-${status}` : '';
+        const boisePin = isBoise(j) ? '<span class="boise-pin">📍</span> ' : '';
+
+        const keywords = (j.keywords || []).slice(0, 8).map(k =>
+          `<span class="keyword-tag">${k}</span>`
+        ).join('');
+        const moreKeywords = (j.keywords || []).length > 8
+          ? `<span class="keyword-tag" style="opacity:0.6">+${j.keywords.length - 8}</span>` : '';
+
+        const btnClass = (type) => {
+          if (status === type) return `action-btn selected selected-${type}`;
+          return 'action-btn';
+        };
+
+        return `
+          <div class="job-card${boiseClass}${statusClass}" data-id="${j.id}">
+            <div class="job-top">
+              <div class="score-badge ${scoreClass(j.score)}">${j.score}</div>
+              <div class="job-info">
+                <a class="job-title" href="${j.url}" target="_blank" rel="noopener">${j.title}</a>
+                <div class="job-company">${j.company}</div>
+                <div class="job-location">${boisePin}${j.location}</div>
+                ${j.posted ? `<div class="job-posted">${j.posted}</div>` : ''}
+              </div>
+            </div>
+            <div class="job-keywords">${keywords}${moreKeywords}</div>
+            <div class="job-actions">
+              <button class="${btnClass('interested')}" onclick="setStatus('${j.id}','interested')">⭐ Interested</button>
+              <button class="${btnClass('applied')}" onclick="setStatus('${j.id}','applied')">✅ Applied</button>
+              <button class="${btnClass('skip')}" onclick="setStatus('${j.id}','skip')">❌ Skip</button>
+            </div>
+            <div class="job-id">${j.platform || ''} · ${j.id}</div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    // ── Set job status ──
+    function setStatus(id, status) {
+      if (jobStatuses[id] === status) {
+        delete jobStatuses[id]; // toggle off
+      } else {
+        jobStatuses[id] = status;
+      }
+      saveStatuses();
+      render();
+    }
+
+    // ── Stat card click ──
+    document.querySelectorAll('.stat-card').forEach(card => {
+      card.addEventListener('click', () => {
+        const filter = card.dataset.filter;
+        if (activeStatFilter === filter) {
+          activeStatFilter = 'all';
+        } else {
+          activeStatFilter = filter;
+        }
+        document.querySelectorAll('.stat-card').forEach(c => c.classList.remove('active'));
+        if (activeStatFilter !== 'all') {
+          card.classList.add('active');
+        }
+        render();
+      });
+    });
+
+    // ── Boise toggle ──
+    document.getElementById('boise-toggle').addEventListener('click', function() {
+      this.classList.toggle('active');
+      render();
+    });
+
+
+
+    // ── Filter event listeners ──
+    ['filter-company', 'filter-location', 'filter-score', 'filter-status', 'sort-select'].forEach(id => {
+      document.getElementById(id).addEventListener('change', render);
+    });
+    document.getElementById('filter-search').addEventListener('input', render);
+
+    // ── Load data ──
+    async function loadJobs() {
+      try {
+        const resp = await fetch('jobs-flossie-data.json?t=' + Date.now());
+        allJobs = await resp.json();
+
+        // Last modified from headers + freshness banner
+        const lastMod = resp.headers.get('Last-Modified');
+        if (lastMod) {
+          const d = new Date(lastMod);
+          const now = new Date();
+          const hoursAgo = Math.round((now - d) / 3600000);
+          const daysAgo = Math.round(hoursAgo / 24);
+
+          const scanTime = d.toLocaleString('en-US', {
+            month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit',
+            timeZone: 'America/Boise'
+          });
+
+          let agoText;
+          if (hoursAgo < 1) agoText = 'just now';
+          else if (hoursAgo < 24) agoText = `${hoursAgo}h ago`;
+          else agoText = `${daysAgo}d ago`;
+
+          document.getElementById('last-scan').textContent = `Last scan: ${scanTime} (${agoText})`;
+
+          const banner = document.getElementById('freshness-banner');
+          const icon = document.getElementById('freshness-icon');
+          const text = document.getElementById('freshness-text');
+
+          if (hoursAgo >= 48) {
+            banner.className = 'freshness-banner stale';
+            icon.textContent = '⚠️';
+            text.textContent = `Data is ${daysAgo} days old. Job listings may have changed. Click "Scan Now" to refresh.`;
+          } else if (hoursAgo >= 24) {
+            banner.className = 'freshness-banner stale';
+            icon.textContent = '🕐';
+            text.textContent = `Last scan was ${agoText}. Run daily-scan-flossie.sh to refresh.`;
+          } else if (hoursAgo < 4) {
+            banner.className = 'freshness-banner fresh';
+            icon.textContent = '✅';
+            text.textContent = `Data is fresh — scanned ${agoText}.`;
+            setTimeout(() => { banner.style.display = 'none'; }, 5000);
+          }
+        }
+
+        loadStatuses();
+        populateCompanyFilter();
+        updateStats();
+        render();
+      } catch(e) {
+        document.getElementById('jobs-grid').innerHTML =
+          '<div class="empty-state"><div class="big-icon">⚠️</div><p>Failed to load job data. Run: node publish-flossie.js</p></div>';
+      }
+    }
+
+    loadJobs();
+
+
+  </script>
+
+</body>
+</html>
