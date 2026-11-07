@@ -1,0 +1,930 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Budget 1440p Gaming PC Guide | AJ Zahnow</title>
+  <style>
+    :root {
+      --bg: #0d1117;
+      --bg-card: #161b22;
+      --bg-card2: #1c2128;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --accent: #3fb950;
+      --accent-dim: #238636;
+      --accent-hover: #56d364;
+      --warn: #f85149;
+      --warn-dim: #da3633;
+      --yellow: #d29922;
+      --blue: #58a6ff;
+      --purple: #bc8cff;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration: none;
+    }
+    a:hover { text-decoration: underline; color: var(--accent-hover); }
+
+    /* ── Header ── */
+    header {
+      background: linear-gradient(135deg, #0d1117 0%, #161b22 50%, #0d1117 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 48px 24px 40px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    header::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 60% 40% at 50% 0%, rgba(63,185,80,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .back-link {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      font-size: 14px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .back-link:hover { color: var(--accent-hover); text-decoration: none; }
+    .back-link svg { width: 14px; height: 14px; }
+
+    .tag {
+      display: inline-block;
+      background: rgba(63,185,80,0.15);
+      border: 1px solid var(--accent-dim);
+      color: var(--accent);
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 3px 10px;
+      border-radius: 20px;
+      margin-bottom: 16px;
+    }
+
+    h1 {
+      font-size: clamp(1.8rem, 5vw, 2.8rem);
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      margin-bottom: 10px;
+      background: linear-gradient(135deg, #e6edf3 30%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .subtitle {
+      font-size: 1.05rem;
+      color: var(--text-muted);
+      max-width: 560px;
+      margin: 0 auto 20px;
+    }
+
+    .target-badges {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .badge {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 6px 14px;
+      font-size: 13px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .badge strong { color: var(--text); }
+
+    /* ── Main layout ── */
+    main {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 32px 20px 80px;
+    }
+
+    /* ── Section / collapsible ── */
+    .section {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      margin-bottom: 20px;
+      overflow: hidden;
+    }
+
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 22px;
+      cursor: pointer;
+      user-select: none;
+      gap: 12px;
+      transition: background 0.15s;
+    }
+    .section-header:hover { background: var(--bg-card2); }
+
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.05rem;
+      font-weight: 600;
+    }
+    .section-icon {
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 16px;
+      flex-shrink: 0;
+    }
+    .icon-green  { background: rgba(63,185,80,0.15); }
+    .icon-blue   { background: rgba(88,166,255,0.15); }
+    .icon-yellow { background: rgba(210,153,34,0.15); }
+    .icon-red    { background: rgba(248,81,73,0.15); }
+    .icon-purple { background: rgba(188,140,255,0.15); }
+
+    .chevron {
+      color: var(--text-muted);
+      transition: transform 0.25s;
+      flex-shrink: 0;
+    }
+    .section.open .chevron { transform: rotate(180deg); }
+
+    .section-body {
+      display: none;
+      padding: 0 22px 22px;
+      border-top: 1px solid var(--border);
+    }
+    .section.open .section-body { display: block; }
+
+    /* ── Tables ── */
+    .table-wrap { overflow-x: auto; margin-top: 16px; }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 14px;
+    }
+    th {
+      background: var(--bg-card2);
+      color: var(--text-muted);
+      text-align: left;
+      padding: 10px 14px;
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: 0.5px;
+      text-transform: uppercase;
+      border-bottom: 1px solid var(--border);
+      white-space: nowrap;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid rgba(48,54,61,0.5);
+      vertical-align: top;
+    }
+    tr:last-child td { border-bottom: none; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* Value badges in table */
+    .val-best  { color: var(--accent); font-weight: 700; }
+    .val-over  { color: var(--warn); }
+    .val-new   { color: var(--blue); }
+    .val-overkill { color: var(--yellow); }
+
+    .pill {
+      display: inline-block;
+      border-radius: 20px;
+      padding: 2px 10px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    .pill-green  { background: rgba(63,185,80,0.18); color: var(--accent); border: 1px solid rgba(63,185,80,0.4); }
+    .pill-red    { background: rgba(248,81,73,0.18); color: var(--warn); border: 1px solid rgba(248,81,73,0.4); }
+    .pill-blue   { background: rgba(88,166,255,0.18); color: var(--blue); border: 1px solid rgba(88,166,255,0.4); }
+    .pill-yellow { background: rgba(210,153,34,0.18); color: var(--yellow); border: 1px solid rgba(210,153,34,0.4); }
+
+    /* ── Build cards ── */
+    .builds-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 16px;
+      margin-top: 16px;
+    }
+
+    .build-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px;
+      position: relative;
+      transition: border-color 0.2s;
+    }
+    .build-card:hover { border-color: var(--accent-dim); }
+    .build-card.recommended { border-color: var(--accent-dim); }
+    .build-card.recommended::before {
+      content: 'RECOMMENDED';
+      position: absolute;
+      top: -1px; right: 14px;
+      background: var(--accent-dim);
+      color: #fff;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      padding: 2px 8px;
+      border-radius: 0 0 6px 6px;
+    }
+
+    .build-name {
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+    .build-platform {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+    }
+    .build-price {
+      font-size: 1.5rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 14px;
+    }
+
+    .part-list { list-style: none; }
+    .part-list li {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 13px;
+      padding: 5px 0;
+      border-bottom: 1px solid rgba(48,54,61,0.4);
+    }
+    .part-list li:last-child { border-bottom: none; }
+    .part-name { color: var(--text-muted); flex-shrink: 0; }
+    .part-val  { text-align: right; color: var(--text); }
+
+    .build-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 14px; }
+
+    .pros-cons {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 12px;
+    }
+    .pros-cons > div { font-size: 12px; }
+    .pros-cons h4 { font-size: 11px; letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 6px; }
+    .pros h4  { color: var(--accent); }
+    .cons h4  { color: var(--warn); }
+    .pros li, .cons li { list-style: none; padding: 2px 0; color: var(--text-muted); }
+    .pros li::before { content: '✓ '; color: var(--accent); }
+    .cons li::before { content: '✗ '; color: var(--warn); }
+
+    /* ── Callout boxes ── */
+    .callout {
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-top: 16px;
+      font-size: 14px;
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+    }
+    .callout-icon { font-size: 18px; flex-shrink: 0; margin-top: 1px; }
+    .callout-green  { background: rgba(63,185,80,0.08);  border: 1px solid rgba(63,185,80,0.25); }
+    .callout-yellow { background: rgba(210,153,34,0.08); border: 1px solid rgba(210,153,34,0.25); }
+    .callout-red    { background: rgba(248,81,73,0.08);  border: 1px solid rgba(248,81,73,0.25); }
+    .callout-blue   { background: rgba(88,166,255,0.08); border: 1px solid rgba(88,166,255,0.25); }
+    .callout p { margin: 0; }
+    .callout strong { color: var(--text); }
+
+    /* ── Quick rec section ── */
+    .quick-recs {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+      gap: 14px;
+      margin-top: 16px;
+    }
+    .quick-rec {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 16px;
+    }
+    .quick-rec-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+    .ql-budget  { color: var(--accent); }
+    .ql-long    { color: var(--blue); }
+    .ql-nowplay { color: var(--yellow); }
+    .quick-rec-name { font-weight: 700; font-size: 1rem; margin-bottom: 4px; }
+    .quick-rec-price { color: var(--accent); font-weight: 700; margin-bottom: 8px; }
+    .quick-rec p { font-size: 13px; color: var(--text-muted); margin: 0; }
+
+    /* ── Links section ── */
+    .links-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 12px;
+      margin-top: 16px;
+    }
+    .link-card {
+      background: var(--bg-card2);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      transition: border-color 0.2s, background 0.2s;
+      color: var(--text);
+    }
+    .link-card:hover {
+      border-color: var(--accent-dim);
+      background: rgba(63,185,80,0.05);
+      text-decoration: none;
+    }
+    .link-icon { font-size: 20px; flex-shrink: 0; }
+    .link-label { font-size: 14px; font-weight: 600; }
+    .link-sub   { font-size: 12px; color: var(--text-muted); }
+
+    /* ── Considerations ── */
+    .consider-list { list-style: none; margin-top: 16px; }
+    .consider-list li {
+      display: flex;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(48,54,61,0.4);
+      font-size: 14px;
+    }
+    .consider-list li:last-child { border-bottom: none; }
+    .consider-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      flex-shrink: 0;
+      margin-top: 7px;
+    }
+
+    /* ── Sub-table header ── */
+    .sub-heading {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+      margin: 20px 0 8px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .sub-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center;
+      padding: 32px 20px;
+      border-top: 1px solid var(--border);
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    footer a { color: var(--text-muted); }
+    footer a:hover { color: var(--accent); }
+
+    /* ── Responsive ── */
+    @media (max-width: 600px) {
+      header { padding: 56px 16px 32px; }
+      .back-link { font-size: 13px; }
+      main { padding: 20px 14px 60px; }
+      .section-header { padding: 14px 16px; }
+      .section-body { padding: 0 16px 18px; }
+      .build-card { padding: 16px; }
+      .pros-cons { grid-template-columns: 1fr; gap: 8px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <a class="back-link" href="/">
+    <svg viewBox="0 0 16 16" fill="currentColor">
+      <path d="M7.78 12.53a.75.75 0 01-1.06 0L2.47 8.28a.75.75 0 010-1.06l4.25-4.25a.75.75 0 011.06 1.06L4.81 7h7.44a.75.75 0 010 1.5H4.81l2.97 2.97a.75.75 0 010 1.06z"/>
+    </svg>
+    ajzahnow.dev
+  </a>
+  <div class="tag">🎮 PC Builds</div>
+  <h1>Budget 1440p Gaming PC Guide</h1>
+  <p class="subtitle">Finding the sweet spot for 1440p 60fps without breaking the bank</p>
+  <div class="target-badges">
+    <div class="badge">🖥️ <strong>1440p</strong>&nbsp;2560×1440</div>
+    <div class="badge">🎯 <strong>60 fps</strong>&nbsp;target</div>
+    <div class="badge">⚙️ <strong>Medium–High</strong>&nbsp;settings</div>
+    <div class="badge">🔴 <strong>AMD Radeon</strong>&nbsp;GPU</div>
+  </div>
+</header>
+
+<main>
+
+  <!-- ── GPU Recommendations ── -->
+  <div class="section open" id="sec-gpu">
+    <div class="section-header" onclick="toggle('sec-gpu')">
+      <div class="section-title">
+        <div class="section-icon icon-red">🔴</div>
+        GPU Recommendations
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-green">
+        <span class="callout-icon">💡</span>
+        <p><strong>All AMD Radeon,</strong> sorted by value for 1440p60. The <strong>RX 7600 8GB</strong> is the clear winner — the jump to 7600 XT nearly doubles the price for only ~15–20% more performance.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>GPU</th>
+              <th>VRAM</th>
+              <th>1440p Performance</th>
+              <th>Price Range</th>
+              <th>Value</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>RX 7600 8GB</strong></td>
+              <td>8GB GDDR6</td>
+              <td>Medium-High 60fps</td>
+              <td>$310–430</td>
+              <td><span class="pill pill-green">★ BEST VALUE</span></td>
+            </tr>
+            <tr>
+              <td>RX 7600 XT 16GB</td>
+              <td>16GB GDDR6</td>
+              <td>High 60fps+</td>
+              <td>$695+</td>
+              <td><span class="pill pill-red">Overpriced</span></td>
+            </tr>
+            <tr>
+              <td>RX 9060 XT 16GB</td>
+              <td>16GB</td>
+              <td>High 60fps+ (RDNA 4)</td>
+              <td>$750–940</td>
+              <td><span class="pill pill-blue">New Gen Premium</span></td>
+            </tr>
+            <tr>
+              <td>RX 7700 XT 12GB</td>
+              <td>12GB GDDR6</td>
+              <td>Ultra 60fps+</td>
+              <td>$845+</td>
+              <td><span class="pill pill-yellow">Overkill</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── CPU Options ── -->
+  <div class="section open" id="sec-cpu">
+    <div class="section-header" onclick="toggle('sec-cpu')">
+      <div class="section-title">
+        <div class="section-icon icon-blue">⚙️</div>
+        CPU Options
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="sub-heading">AM4 Platform · Budget · DDR4</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>CPU</th><th>Cores/Threads</th><th>Price</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Ryzen 5 5500</td>
+              <td>6C / 12T</td>
+              <td>~$87</td>
+              <td style="color:var(--text-muted)">Ultra budget, no bottleneck with RX 7600</td>
+            </tr>
+            <tr>
+              <td><strong>Ryzen 5 5600</strong></td>
+              <td>6C / 12T</td>
+              <td>~$148</td>
+              <td style="color:var(--accent)">Best AM4 gaming value</td>
+            </tr>
+            <tr>
+              <td>Ryzen 5 5600X</td>
+              <td>6C / 12T</td>
+              <td>~$156</td>
+              <td style="color:var(--text-muted)">Slightly faster, good value</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-heading">AM5 Platform · Future-Proof · DDR5</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>CPU</th><th>Cores/Threads</th><th>Price</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>Ryzen 5 7600X</strong></td>
+              <td>6C / 12T</td>
+              <td>~$166</td>
+              <td style="color:var(--accent)">Best AM5 value, great gaming</td>
+            </tr>
+            <tr>
+              <td>Ryzen 5 7600</td>
+              <td>6C / 12T</td>
+              <td>~$219</td>
+              <td style="color:var(--text-muted)">Same chip, lower clocks</td>
+            </tr>
+            <tr>
+              <td>Ryzen 5 7600X3D</td>
+              <td>6C / 12T</td>
+              <td>~$250</td>
+              <td style="color:var(--blue)">3D V-Cache, best gaming perf</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="sub-heading">Intel · LGA1700 · DDR4 or DDR5</div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>CPU</th><th>Cores/Threads</th><th>Price</th><th>Notes</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Core i5-12400F</td>
+              <td>6C / 12T</td>
+              <td>~$110–130</td>
+              <td style="color:var(--text-muted)">Great budget, no iGPU</td>
+            </tr>
+            <tr>
+              <td><strong>Core i5-13400F</strong></td>
+              <td>6+4C / 16T</td>
+              <td>~$150–170</td>
+              <td style="color:var(--text-muted)">Excellent mid-range</td>
+            </tr>
+            <tr>
+              <td>Core i5-14400F</td>
+              <td>6+4C / 16T</td>
+              <td>~$160–180</td>
+              <td style="color:var(--text-muted)">Latest gen, similar perf</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Custom Builds ── -->
+  <div class="section open" id="sec-builds">
+    <div class="section-header" onclick="toggle('sec-builds')">
+      <div class="section-title">
+        <div class="section-icon icon-green">🔧</div>
+        Custom Build Options
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="builds-grid">
+
+        <!-- Build 1 -->
+        <div class="build-card">
+          <div class="build-name">Build 1: Ultra Budget</div>
+          <div class="build-platform">AM4 Platform · DDR4</div>
+          <div class="build-price">~$720–800</div>
+          <ul class="part-list">
+            <li><span class="part-name">CPU</span><span class="part-val">Ryzen 5 5600 ~$148</span></li>
+            <li><span class="part-name">Motherboard</span><span class="part-val">B550 ~$90</span></li>
+            <li><span class="part-name">RAM</span><span class="part-val">16GB DDR4-3200 ~$35</span></li>
+            <li><span class="part-name">GPU</span><span class="part-val">RX 7600 8GB ~$310–390</span></li>
+            <li><span class="part-name">Storage</span><span class="part-val">500GB NVMe ~$35</span></li>
+            <li><span class="part-name">Case</span><span class="part-val">Budget ATX ~$50</span></li>
+            <li><span class="part-name">PSU</span><span class="part-val">550W 80+ Bronze ~$50</span></li>
+          </ul>
+          <div class="build-tags">
+            <span class="pill pill-green">Cheapest</span>
+            <span class="pill pill-yellow">End-of-life</span>
+          </div>
+          <div class="pros-cons">
+            <div class="pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>Cheapest 1440p60 path</li>
+                <li>Proven platform</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>AM4 end-of-life</li>
+                <li>No upgrade path</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Build 2 -->
+        <div class="build-card recommended">
+          <div class="build-name">Build 2: Smart Mid-Range</div>
+          <div class="build-platform">AM5 Platform · DDR5</div>
+          <div class="build-price">~$840–920</div>
+          <ul class="part-list">
+            <li><span class="part-name">CPU</span><span class="part-val">Ryzen 5 7600X ~$166</span></li>
+            <li><span class="part-name">Motherboard</span><span class="part-val">B650 ~$140</span></li>
+            <li><span class="part-name">RAM</span><span class="part-val">16GB DDR5-5600 ~$55</span></li>
+            <li><span class="part-name">GPU</span><span class="part-val">RX 7600 8GB ~$310–390</span></li>
+            <li><span class="part-name">Storage</span><span class="part-val">1TB NVMe ~$55</span></li>
+            <li><span class="part-name">Case</span><span class="part-val">Mid-tower ATX ~$60</span></li>
+            <li><span class="part-name">PSU</span><span class="part-val">650W 80+ Bronze ~$55</span></li>
+          </ul>
+          <div class="build-tags">
+            <span class="pill pill-green">Future-proof</span>
+            <span class="pill pill-blue">DDR5</span>
+          </div>
+          <div class="pros-cons">
+            <div class="pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>AM5 upgrade path</li>
+                <li>DDR5, Zen 5+ ready</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>$100–150 more up front</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Build 3 -->
+        <div class="build-card">
+          <div class="build-name">Build 3: Intel Budget</div>
+          <div class="build-platform">LGA1700 · DDR4 or DDR5</div>
+          <div class="build-price">~$720–890</div>
+          <ul class="part-list">
+            <li><span class="part-name">CPU</span><span class="part-val">i5-12400F/13400F ~$120–160</span></li>
+            <li><span class="part-name">Motherboard</span><span class="part-val">B660/B760 ~$100–130</span></li>
+            <li><span class="part-name">RAM</span><span class="part-val">16GB DDR4/DDR5 ~$35–55</span></li>
+            <li><span class="part-name">GPU</span><span class="part-val">RX 7600 8GB ~$310–390</span></li>
+            <li><span class="part-name">Storage</span><span class="part-val">1TB NVMe ~$55</span></li>
+            <li><span class="part-name">Case</span><span class="part-val">Budget ATX ~$50</span></li>
+            <li><span class="part-name">PSU</span><span class="part-val">550W 80+ Bronze ~$50</span></li>
+          </ul>
+          <div class="build-tags">
+            <span class="pill pill-blue">Strong IPC</span>
+          </div>
+          <div class="pros-cons">
+            <div class="pros">
+              <h4>Pros</h4>
+              <ul>
+                <li>Strong single-thread</li>
+                <li>Good value</li>
+              </ul>
+            </div>
+            <div class="cons">
+              <h4>Cons</h4>
+              <ul>
+                <li>Intel sockets change often</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Prebuilt Options ── -->
+  <div class="section" id="sec-prebuilt">
+    <div class="section-header" onclick="toggle('sec-prebuilt')">
+      <div class="section-title">
+        <div class="section-icon icon-yellow">🖥️</div>
+        Prebuilt Options
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="callout callout-yellow">
+        <span class="callout-icon">🛍️</span>
+        <p><strong>Black Friday/Cyber Monday is coming up</strong> in the next few weeks — prebuilt prices often drop 15–25%. Worth waiting if you're not in a rush.</p>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead>
+            <tr><th>System</th><th>CPU</th><th>GPU</th><th>RAM</th><th>Storage</th><th>Price</th><th>Where</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>STGAubron Gaming PC</strong></td>
+              <td>Core i7</td>
+              <td>RX 7600 8GB</td>
+              <td>16GB</td>
+              <td>512GB SSD</td>
+              <td><strong style="color:var(--accent)">$740</strong></td>
+              <td><a href="https://www.newegg.com/p/pl?d=rx+7600" target="_blank" rel="noopener">Newegg</a></td>
+            </tr>
+            <tr>
+              <td><strong>ZYNEEX S5 Esports</strong></td>
+              <td>Ryzen 7 5700X</td>
+              <td>RX 7600 8GB</td>
+              <td>32GB DDR4</td>
+              <td>1TB NVMe</td>
+              <td><strong style="color:var(--yellow)">$990</strong></td>
+              <td><a href="https://www.newegg.com/p/pl?d=rx+7600" target="_blank" rel="noopener">Newegg</a></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Important Considerations ── -->
+  <div class="section" id="sec-notes">
+    <div class="section-header" onclick="toggle('sec-notes')">
+      <div class="section-title">
+        <div class="section-icon icon-purple">📝</div>
+        Important Considerations
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <ul class="consider-list">
+        <li>
+          <div class="consider-dot"></div>
+          <div><strong>8GB VRAM caveat:</strong> 8GB is adequate for 1440p60 today but may become limiting in 2–3 years for newer titles at high settings.</div>
+        </li>
+        <li>
+          <div class="consider-dot"></div>
+          <div><strong>RX 7600 real-world:</strong> Handles 1440p medium-high at 60fps in most current titles — Cyberpunk, Hogwarts Legacy, Baldur's Gate 3.</div>
+        </li>
+        <li>
+          <div class="consider-dot"></div>
+          <div><strong>Esports titles:</strong> For Valorant, CS2, Fortnite — expect 1440p 100+ fps with ease.</div>
+        </li>
+        <li>
+          <div class="consider-dot"></div>
+          <div><strong>Monitor:</strong> A solid 1440p 60Hz monitor can be found for $150–200 if needed.</div>
+        </li>
+        <li>
+          <div class="consider-dot"></div>
+          <div><strong>Timing:</strong> Black Friday / Cyber Monday is coming up — consider waiting for deals on both prebuilts and parts.</div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- ── Where to Buy ── -->
+  <div class="section" id="sec-buy">
+    <div class="section-header" onclick="toggle('sec-buy')">
+      <div class="section-title">
+        <div class="section-icon icon-blue">🛒</div>
+        Where to Buy
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="links-grid">
+        <a class="link-card" href="https://pcpartpicker.com/guide/" target="_blank" rel="noopener">
+          <span class="link-icon">🛠️</span>
+          <div>
+            <div class="link-label">PCPartPicker</div>
+            <div class="link-sub">Build guides &amp; price tracking</div>
+          </div>
+        </a>
+        <a class="link-card" href="https://www.newegg.com/p/pl?d=rx+7600" target="_blank" rel="noopener">
+          <span class="link-icon">🔴</span>
+          <div>
+            <div class="link-label">Newegg AMD GPUs</div>
+            <div class="link-sub">RX 7600 listings</div>
+          </div>
+        </a>
+        <a class="link-card" href="https://www.amazon.com/s?k=gaming+desktop+rx+7600" target="_blank" rel="noopener">
+          <span class="link-icon">📦</span>
+          <div>
+            <div class="link-label">Amazon</div>
+            <div class="link-sub">Gaming desktops w/ RX 7600</div>
+          </div>
+        </a>
+        <a class="link-card" href="https://reddit.com/r/buildapcsales" target="_blank" rel="noopener">
+          <span class="link-icon">🤖</span>
+          <div>
+            <div class="link-label">r/buildapcsales</div>
+            <div class="link-sub">Community deal alerts</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ── Quick Recommendation ── -->
+  <div class="section open" id="sec-rec">
+    <div class="section-header" onclick="toggle('sec-rec')">
+      <div class="section-title">
+        <div class="section-icon icon-green">⚡</div>
+        Quick Recommendation
+      </div>
+      <svg class="chevron" width="18" height="18" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M12.78 5.47a.75.75 0 010 1.06l-4.25 4.25a.75.75 0 01-1.06 0L3.22 6.53a.75.75 0 011.06-1.06L8 9.19l3.72-3.72a.75.75 0 011.06 0z"/>
+      </svg>
+    </div>
+    <div class="section-body">
+      <div class="quick-recs">
+        <div class="quick-rec">
+          <div class="quick-rec-label ql-budget">Maximum Affordability</div>
+          <div class="quick-rec-name">Build 1 — AM4</div>
+          <div class="quick-rec-price">~$720</div>
+          <p>Proven platform, cheapest path to 1440p60. Gets the job done.</p>
+        </div>
+        <div class="quick-rec">
+          <div class="quick-rec-label ql-long">For Longevity</div>
+          <div class="quick-rec-name">Build 2 — AM5</div>
+          <div class="quick-rec-price">~$850</div>
+          <p>Costs more now but the AM5 platform has years of CPU upgrades ahead.</p>
+        </div>
+        <div class="quick-rec">
+          <div class="quick-rec-label ql-nowplay">Just Buy &amp; Play</div>
+          <div class="quick-rec-name">STGAubron Prebuilt</div>
+          <div class="quick-rec-price">$740</div>
+          <p>i7 + RX 7600 prebuilt from Newegg. Hard to beat for no-hassle gaming.</p>
+        </div>
+      </div>
+      <div class="callout callout-blue" style="margin-top:20px">
+        <span class="callout-icon">📅</span>
+        <p>Prices as of <strong>November 2026.</strong> Always check current pricing before purchasing — deals fluctuate, especially around the holidays.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <p>Built by <a href="/">AJ Zahnow</a> · <a href="https://github.com/cat-battle/resume" target="_blank" rel="noopener">GitHub</a></p>
+</footer>
+
+<script>
+  function toggle(id) {
+    const el = document.getElementById(id);
+    el.classList.toggle('open');
+  }
+</script>
+
+</body>
+</html>
