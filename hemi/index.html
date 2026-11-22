@@ -1,0 +1,747 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>5.7L HEMI Top-End Rebuild Guide — 2014 Ram 1500</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg: #0d1117;
+      --bg2: #161b22;
+      --bg3: #1f2937;
+      --border: #30363d;
+      --text: #e6edf3;
+      --text-muted: #8b949e;
+      --green: #3fb950;
+      --green-dim: #238636;
+      --yellow: #d29922;
+      --red: #da3633;
+      --blue: #58a6ff;
+      --radius: 8px;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-size: 15px;
+      line-height: 1.6;
+      padding: 0 0 60px;
+    }
+
+    .site-header {
+      background: var(--bg2);
+      border-bottom: 1px solid var(--border);
+      padding: 28px 20px 24px;
+      text-align: center;
+    }
+    .site-header .eyebrow {
+      font-size: 12px;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--green);
+      margin-bottom: 8px;
+    }
+    .site-header h1 {
+      font-size: clamp(1.4rem, 4vw, 2.1rem);
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1.2;
+    }
+    .site-header .subtitle {
+      margin-top: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+
+    .container { max-width: 920px; margin: 0 auto; padding: 0 16px; }
+
+    .section { margin-top: 36px; }
+    .section-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 14px;
+    }
+    .section-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--green-dim);
+      color: var(--green);
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .card {
+      background: var(--bg2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 18px 20px;
+      margin-bottom: 14px;
+    }
+
+    .alert {
+      background: rgba(63, 185, 80, 0.07);
+      border: 1px solid rgba(63, 185, 80, 0.3);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 16px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .alert strong { color: var(--green); }
+
+    .warning {
+      background: rgba(210, 153, 34, 0.08);
+      border: 1px solid rgba(210, 153, 34, 0.35);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      margin-bottom: 14px;
+      color: var(--text-muted);
+      font-size: 14px;
+    }
+    .warning strong { color: var(--yellow); }
+
+    .prose p { color: var(--text-muted); margin-bottom: 10px; font-size: 14px; }
+    .prose p:last-child { margin-bottom: 0; }
+    .prose strong { color: var(--text); }
+
+    .table-wrap {
+      overflow-x: auto;
+      -webkit-overflow-scrolling: touch;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13.5px;
+    }
+    thead tr { background: var(--bg3); }
+    thead th {
+      padding: 10px 14px;
+      text-align: left;
+      color: var(--text-muted);
+      font-weight: 600;
+      font-size: 12px;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      border-bottom: 1px solid var(--border);
+    }
+    tbody tr {
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: var(--bg3); }
+    tbody td {
+      padding: 11px 14px;
+      vertical-align: top;
+      color: var(--text);
+    }
+    tbody td.muted { color: var(--text-muted); font-size: 13px; }
+    .price { color: var(--green); font-weight: 600; white-space: nowrap; }
+    .badge-yes {
+      background: rgba(63, 185, 80, 0.15);
+      color: var(--green);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+    .badge-no {
+      background: rgba(218, 54, 51, 0.12);
+      color: var(--red);
+      border-radius: 4px;
+      padding: 2px 7px;
+      font-size: 12px;
+      font-weight: 600;
+      white-space: nowrap;
+    }
+
+    a { color: var(--blue); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    .sub-heading {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin: 20px 0 10px;
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sub-heading:first-child { margin-top: 0; }
+
+    details {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    details summary {
+      padding: 11px 16px;
+      cursor: pointer;
+      font-size: 13px;
+      color: var(--text-muted);
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      user-select: none;
+    }
+    details summary::-webkit-details-marker { display: none; }
+    details summary::before {
+      content: "\25B6";
+      font-size: 10px;
+      color: var(--green);
+      transition: transform .2s;
+      flex-shrink: 0;
+    }
+    details[open] summary::before { transform: rotate(90deg); }
+    details summary:hover { color: var(--text); }
+    details .details-body {
+      padding: 0 16px 14px;
+      font-size: 13.5px;
+      color: var(--text-muted);
+      border-top: 1px solid var(--border);
+    }
+    details .details-body p { margin: 10px 0 0; }
+
+    .notes-list { list-style: none; padding: 0; }
+    .notes-list li {
+      display: flex;
+      gap: 12px;
+      padding: 14px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .notes-list li:last-child { border-bottom: none; }
+    .notes-list .note-icon { font-size: 18px; flex-shrink: 0; line-height: 1.4; }
+    .notes-list strong { color: var(--text); }
+
+    .shop-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 12px;
+    }
+    .shop-card {
+      background: var(--bg3);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+    }
+    .shop-name { font-weight: 700; font-size: 14px; color: var(--text); margin-bottom: 4px; }
+    .shop-detail { font-size: 13px; color: var(--text-muted); margin-bottom: 2px; }
+    .shop-rating { color: var(--yellow); font-size: 13px; font-weight: 600; }
+    .shop-note { font-size: 12px; color: var(--green); margin-top: 6px; }
+
+    footer {
+      margin-top: 48px;
+      padding: 20px;
+      border-top: 1px solid var(--border);
+      text-align: center;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+    footer a { color: var(--text-muted); }
+
+    @media (max-width: 600px) {
+      .site-header { padding: 20px 16px 18px; }
+      .card { padding: 14px 14px; }
+      thead th, tbody td { padding: 9px 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="eyebrow">Parts Research</div>
+  <h1>5.7L HEMI Top-End Rebuild Guide</h1>
+  <p class="subtitle">2014 Ram 1500 &nbsp;&middot;&nbsp; Prices verified November 2026</p>
+</header>
+
+<div class="container">
+
+  <!-- SECTION 1 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">1</span>
+      What Happened &amp; What Needs Replacing
+    </div>
+
+    <div class="card prose">
+      <p>A <strong>valve spring failed</strong>, which let one of the valves drop into the engine. When a valve drops, it can bounce around in the cylinder and cause serious damage to the cylinder head &mdash; including the valve seat, valve guides, and the head surface itself. The failed spring also <strong>bent a pushrod</strong>.</p>
+      <p>Even if the damage only affected one side, the entire top end is coming apart anyway, which makes this the right time to do a proper rebuild and <strong>delete the MDS system</strong>.</p>
+    </div>
+
+    <div class="alert">
+      <strong>What is MDS and why delete it?</strong><br>
+      MDS (Multi-Displacement System) is Chrysler&rsquo;s cylinder deactivation system &mdash; it shuts down 4 of the 8 cylinders at highway speeds to save fuel. The hardware that makes this work puts extra stress on valve springs, and failed valve springs are one of the most common HEMI failure modes. <strong>Deleting MDS eliminates this failure point entirely.</strong> It&rsquo;s the fix, not just a repair.
+    </div>
+
+    <details>
+      <summary>What parts are typically replaced in a top-end rebuild?</summary>
+      <div class="details-body">
+        <p><strong>Definitely replacing:</strong> both cylinder heads (or at minimum the damaged one), camshaft, all 16 lifters, all 16 pushrods, all valve springs, and all head gaskets.</p>
+        <p><strong>Inspect and likely replace:</strong> rocker arms, rocker arm bolts, timing chain/tensioner (since everything is apart).</p>
+        <p><strong>MDS delete also requires:</strong> a PCM tune to disable cylinder deactivation in software. Some kits include a tuner; others don&rsquo;t. See the Important Notes section.</p>
+      </div>
+    </details>
+  </div>
+
+  <!-- SECTION 2 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">2</span>
+      Complete MDS Delete Kits <span style="font-size:12px;color:var(--green);margin-left:8px;font-weight:400;">&mdash; Recommended</span>
+    </div>
+
+    <div class="alert">
+      <strong>Best overall approach:</strong> These all-in-one kits include a non-MDS camshaft, non-MDS lifters, valve springs, and gaskets &mdash; everything you need to do the rebuild right the first time. The more expensive kits also include a PCM tuner (required) and upgraded springs.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Kit</th><th>Price</th><th>Vendor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=MDS+Killer+Kit+5.7+hemi+MDS+delete" target="_blank" rel="noopener">MDS Killer Kit &ndash; 5.7L Hemi MDS Delete Kit</a></td>
+            <td class="price">$1,050</td>
+            <td class="muted">Heavy Duty Parts</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.speedwaymotors.com/search?query=enginetech+dkcr345+hemi+mds+delete" target="_blank" rel="noopener">Enginetech DKCR345-B Hemi 5.7L MDS Delete Kit (Non-VVT)</a></td>
+            <td class="price">$1,043</td>
+            <td class="muted">Speedway Motors</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.texasspeed.com/search?q=5.7+hemi+mds+delete" target="_blank" rel="noopener">TSP 5.7L HEMI Stock Replacement MDS Delete Kit (Non-VVT)</a></td>
+            <td class="price">$1,109</td>
+            <td class="muted">Texas Speed &amp; Performance</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=AMS+Racing+MDS+delete+5.7+hemi+tuning+package" target="_blank" rel="noopener">AMS Racing MDS Delete Install Kit and Tuning Package</a></td>
+            <td class="price">$1,195</td>
+            <td class="muted">AMS Racing</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.summitracing.com/search?query=melling+mdk200+hemi+mds+delete" target="_blank" rel="noopener">Melling MDK200 Hemi Engine Cylinder Deactivation Delete Kit</a></td>
+            <td class="price">$1,356</td>
+            <td class="muted">Summit Racing</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=AMS+Racing+complete+MDS+delete+overhaul+5.7+hemi" target="_blank" rel="noopener">AMS Racing Complete MDS Delete Overhaul Kit (2009&ndash;2015 Ram)</a></td>
+            <td class="price">$1,390</td>
+            <td class="muted">AMS Racing</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=797+performance+5.7+hemi+MDS+delete+camshaft+kit" target="_blank" rel="noopener">797 Performance 5.7L Hemi MDS Delete Camshaft Kit</a></td>
+            <td class="price">$1,500</td>
+            <td class="muted">797 Performance</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=AMS+Racing+MDS+delete+tuner+package+2009-2014+hemi" target="_blank" rel="noopener">AMS Racing MDS Delete Kit and Tuner Package (2009&ndash;2014)</a></td>
+            <td class="price">$1,505</td>
+            <td class="muted">AMS Racing</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <strong>&#9888; Kit pricing note:</strong> Kits range from ~$1,000&ndash;$1,500. The more expensive kits typically include a <strong>PCM tuner</strong> (required to disable MDS in the computer), upgraded valve springs, and head gaskets. Budget kits may require purchasing the tuner (~$350&ndash;500) and gaskets separately &mdash; factor that in when comparing prices.
+    </div>
+  </div>
+
+  <!-- SECTION 3 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">3</span>
+      Cylinder Heads
+    </div>
+
+    <div class="alert">
+      <strong>Key question:</strong> Does he need one head or two? A machine shop can inspect both heads once they&rsquo;re off. The side where the valve dropped is almost certainly damaged. The other side may still be fine &mdash; a shop can resurface it and reuse it. Budget for at least one new or reman head; two if both are compromised.
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Head</th><th>Price</th><th>Vendor</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=genuine+mopar+5.7+hemi+cylinder+head" target="_blank" rel="noopener">Genuine Mopar 5.7L Hemi Cylinder Head</a></td>
+            <td class="price">$430 ea.</td>
+            <td class="muted">Engines R Us</td>
+            <td class="muted">OEM, single head</td>
+          </tr>
+          <tr>
+            <td><a href="https://store.mopar.com/search?q=5.7+hemi+cylinder+head" target="_blank" rel="noopener">Mopar Engine Cylinder Head Assembly &mdash; Remanufactured</a></td>
+            <td class="price">$455 ea.</td>
+            <td class="muted">Mopar Parts</td>
+            <td class="muted">Factory reman (was $549)</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=5.7+hemi+stock+cylinder+head+driver" target="_blank" rel="noopener">2009&ndash;2026 Dodge/Ram 5.7L Hemi Stock Cylinder Head</a></td>
+            <td class="price">$590 ea.</td>
+            <td class="muted">Dave&rsquo;s Auto Center</td>
+            <td class="muted">New aftermarket</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=new+5.7+hemi+large+port+cylinder+head" target="_blank" rel="noopener">New 5.7L Dodge Hemi Large Port Cylinder Head</a></td>
+            <td class="price">$675 ea.</td>
+            <td class="muted">Heavy Duty Parts</td>
+            <td class="muted">New, large port</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=remanufactured+5.7+hemi+cylinder+head" target="_blank" rel="noopener">Remanufactured Chrysler/Dodge/Jeep 5.7L V8 Head</a></td>
+            <td class="price">$895 ea.</td>
+            <td class="muted">Heavy Duty Parts</td>
+            <td class="muted">Refurbished</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=new+pair+5.7+hemi+large+port+cylinder+heads" target="_blank" rel="noopener">New Pair 5.7L Dodge Hemi Large Port Heads</a></td>
+            <td class="price">$1,100 pair</td>
+            <td class="muted">Heavy Duty Parts</td>
+            <td class="muted">Both heads, new</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card prose">
+      <p>He may only need <strong>one head replaced</strong> &mdash; the side where the valve dropped. A machine shop can inspect both and tell you if the second head is salvageable. Expect <strong>$430&ndash;$675 per head</strong> for a solid replacement. If both heads need replacing, budget <strong>$860&ndash;$1,350 for the pair</strong>.</p>
+    </div>
+  </div>
+
+  <!-- SECTION 4 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">4</span>
+      Individual Components
+    </div>
+
+    <div class="card prose">
+      <p>If sourcing parts individually instead of a kit, here&rsquo;s what you&rsquo;ll need. This route takes more research to ensure compatibility but can save money if you already have some components.</p>
+    </div>
+
+    <div class="sub-heading">Cam &amp; Lifter Kits (MDS Delete)</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Kit</th><th>Price</th><th>Vendor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.ebay.com/sch/i.html?_nkw=non+mds+5.7+hemi+camshaft+lifter+kit" target="_blank" rel="noopener">Non-MDS 5.7L Hemi Camshaft &amp; Lifter Kit (2009&ndash;2015)</a></td>
+            <td class="price">$209</td>
+            <td class="muted">eBay</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=AMS+Racing+MDS+delete+camshaft+lifter+kit+5.7+hemi" target="_blank" rel="noopener">AMS Racing MDS Delete Camshaft &amp; Lifter Kit (2009+)</a></td>
+            <td class="price">$480</td>
+            <td class="muted">AMS Racing</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=Mizumo+non+MDS+lifters+camshaft+kit+5.7+hemi" target="_blank" rel="noopener">Complete NON MDS Lifters Camshaft Kit (09&ndash;16 Chrysler/Dodge)</a></td>
+            <td class="price">$500</td>
+            <td class="muted">Mizumo Auto</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-heading">Head Gasket Sets</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Gasket Set</th><th>Price</th><th>Vendor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.ebay.com/sch/i.html?_nkw=5.7+hemi+head+gasket+set+2009-2015" target="_blank" rel="noopener">5.7L HEMI Head Gasket Set (2009&ndash;2015)</a></td>
+            <td class="price">$48</td>
+            <td class="muted">eBay</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.walmart.com/search?q=lablt+head+gasket+set+5.7+hemi" target="_blank" rel="noopener">Lablt Head Gasket Set &amp; Bolts Kit (09&ndash;15 5.7L)</a></td>
+            <td class="price">$86</td>
+            <td class="muted">Walmart</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.partsgeek.com/catalog/dodge/ram-1500/head-gasket-set.html" target="_blank" rel="noopener">Head Gasket Set (2009&ndash;2020 Dodge)</a></td>
+            <td class="price">$110</td>
+            <td class="muted">Partsgeek</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=MAHLE+hs54418+5.7+hemi+head+gasket+set" target="_blank" rel="noopener">MAHLE Engine Cylinder Head Gasket Set HS54418</a></td>
+            <td class="price">$135</td>
+            <td class="muted">PartsHawk</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=michigan+motorsports+5.7+hemi+head+gasket+set" target="_blank" rel="noopener">2009+ HEMI 5.7L Top End &amp; Cylinder Head Gasket Set</a></td>
+            <td class="price">$145</td>
+            <td class="muted">Michigan Motorsports</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=partsology+5.7+hemi+head+gasket+set+bolt+kit" target="_blank" rel="noopener">Cylinder Head Gasket Set with Head Bolt Kit</a></td>
+            <td class="price">$222</td>
+            <td class="muted">Partsology</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-heading">Valve Springs</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Springs</th><th>Price</th><th>Vendor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=AMS+Racing+stock+valve+springs+seals+5.7+hemi" target="_blank" rel="noopener">Stock Valve Springs &amp; Seals Kit (2009+)</a></td>
+            <td class="price">$120</td>
+            <td class="muted">AMS Racing</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=texas+speed+5.7+hemi+valve+spring+kit" target="_blank" rel="noopener">Texas Speed 5.7 Hemi Complete Head and Valve Spring Kit</a></td>
+            <td class="price">$150</td>
+            <td class="muted">797 Performance</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="sub-heading">Pushrods</div>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Pushrods</th><th>Price</th><th>Vendor</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.google.com/search?tbm=shop&q=dover+cylinder+head+5.7+hemi+pushrods" target="_blank" rel="noopener">Dover Cylinder Head Dodge Hemi 5.7L Pushrods (set of 16)</a></td>
+            <td class="price">$94</td>
+            <td class="muted">Dover Cylinder Heads</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.ebay.com/sch/i.html?_nkw=5.7+hemi+pushrods+2009-2015" target="_blank" rel="noopener">5.7L HEMI OHV Pushrods (2009&ndash;2015)</a></td>
+            <td class="price">$92</td>
+            <td class="muted">eBay</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- SECTION 5 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">5</span>
+      Reman Engine Options
+    </div>
+
+    <div class="card prose">
+      <p>If the damage is too extensive for a top-end rebuild &mdash; or if a shop finds additional block or crank damage &mdash; a remanufactured engine swap may make more sense. JASPER and Fraser both offer MDS-delete builds.</p>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Vendor</th><th>MDS Delete?</th><th>Price Range</th><th>Warranty</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><a href="https://www.jasperengines.com" target="_blank" rel="noopener">JASPER Engines</a></td>
+            <td><span class="badge-yes">&#10003; Yes (incl. tuner)</span></td>
+            <td class="price">~$5,000&ndash;6,500</td>
+            <td class="muted">3yr / 100K miles</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.fraserengines.com" target="_blank" rel="noopener">Fraser Engines</a></td>
+            <td><span class="badge-yes">&#10003; Yes (4 options)</span></td>
+            <td class="price">~$4,000&ndash;6,000</td>
+            <td class="muted">Up to 5yr / unlimited</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.powertrainproducts.net" target="_blank" rel="noopener">Powertrain Products (EZH)</a></td>
+            <td><span class="badge-no">&#10007; Standard MDS</span></td>
+            <td class="price">$3,999&ndash;4,199</td>
+            <td class="muted">7yr / 1M miles</td>
+          </tr>
+          <tr>
+            <td><a href="https://www.jegs.com/i/ATK+Engines/059/DDM42/10002/-1" target="_blank" rel="noopener">ATK Engines via JEGS (DDM42)</a></td>
+            <td><span class="badge-no">&#10007; Standard</span></td>
+            <td class="price">$4,198 + $770 core</td>
+            <td class="muted">Standard</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="warning">
+      <strong>&#9888; Powertrain Products / ATK warning:</strong> These engines still have MDS. Unless the shop also does an MDS delete during installation, you&rsquo;re right back where you started. Stick with JASPER or Fraser if going the reman route.
+    </div>
+  </div>
+
+  <!-- SECTION 6 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">6</span>
+      Local Rebuilders Near Medford, OR
+    </div>
+
+    <div class="shop-grid">
+      <div class="shop-card">
+        <div class="shop-name">Absolute Precision Automotive Machine LLC</div>
+        <div class="shop-detail">&#128205; 2984 Foothill Blvd, Grants Pass, OR 97526</div>
+        <div class="shop-detail">&#128222; <a href="tel:5414795161">(541) 479-5161</a></div>
+        <div class="shop-rating">&#9733; 5.0 (Yelp)</div>
+        <div class="shop-note">HEMI head experience &mdash; recommended for cylinder head machining</div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-name">D&amp;C Sauer&rsquo;s Machine LLC</div>
+        <div class="shop-detail">&#128205; 2810 N Pacific Hwy, Medford, OR</div>
+        <div class="shop-detail">&#128222; <a href="tel:5419736764">(541) 973-6764</a></div>
+        <div class="shop-rating">&#9733; 4.5 (73 reviews)</div>
+        <div class="shop-note">15+ years, good on price</div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-name">Quality Machine Corporation</div>
+        <div class="shop-detail">&#128205; 5620 Crater Lake Ave #100, Medford</div>
+        <div class="shop-detail">&#128222; <a href="tel:5417760692">(541) 776-0692</a></div>
+        <div class="shop-rating">&#9733; 4.3 (16 reviews)</div>
+        <div class="shop-note">Block resurfacing, honing, balancing, dyno</div>
+      </div>
+      <div class="shop-card">
+        <div class="shop-name">Pro Service Center Auto Repair</div>
+        <div class="shop-detail">&#128205; 1046 Court St, Medford, OR 97501</div>
+        <div class="shop-detail">&#128222; <a href="tel:5417763848">(541) 776-3848</a></div>
+        <div class="shop-rating" style="color:var(--green);">&#10003; Authorized JASPER Installer</div>
+        <div class="shop-note">Best option if going the JASPER reman engine route</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- SECTION 7 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">7</span>
+      Cost Estimates Summary
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Path</th><th>Parts Est.</th><th>Labor Est.</th><th>Total Est.</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td style="font-weight:600;">Top-end rebuild + MDS delete kit + 1 head</td>
+            <td class="price">$1,615&ndash;2,310</td>
+            <td class="muted">$1,500&ndash;2,500</td>
+            <td style="color:var(--green);font-weight:700;">$3,100&ndash;4,900</td>
+            <td class="muted">Best value; removes MDS problem</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Top-end rebuild + MDS delete kit + 2 heads</td>
+            <td class="price">$2,045&ndash;2,985</td>
+            <td class="muted">$1,500&ndash;2,500</td>
+            <td style="color:var(--green);font-weight:700;">$3,500&ndash;5,500</td>
+            <td class="muted">If both heads need replacing</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">JASPER Reman Engine (MDS delete)</td>
+            <td class="price">$5,000&ndash;6,500</td>
+            <td class="muted">$1,500&ndash;2,500</td>
+            <td style="color:var(--yellow);font-weight:700;">$6,500&ndash;9,000</td>
+            <td class="muted">Turnkey, includes tuner, 3yr warranty</td>
+          </tr>
+          <tr>
+            <td style="font-weight:600;">Budget Reman Engine (standard MDS)</td>
+            <td class="price">$3,500&ndash;4,200</td>
+            <td class="muted">$1,500&ndash;2,500</td>
+            <td style="color:var(--red);font-weight:700;">$5,000&ndash;6,700</td>
+            <td class="muted">Still has MDS &mdash; may fail again</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="alert">
+      <strong>Labor estimates are for the Medford, OR area.</strong> Getting the MDS delete done during this rebuild is <strong>strongly recommended</strong> &mdash; it&rsquo;s the reason the engine failed in the first place. Skipping it on a budget reman means you could be back in the same situation in 50K&ndash;100K miles.
+    </div>
+  </div>
+
+  <!-- SECTION 8 -->
+  <div class="section">
+    <div class="section-title">
+      <span class="section-num">8</span>
+      Important Notes
+    </div>
+
+    <div class="card">
+      <ul class="notes-list">
+        <li>
+          <span class="note-icon">&#128421;</span>
+          <div>
+            <strong>MDS Delete Requires a PCM Tune</strong><br>
+            When deleting MDS, the truck&rsquo;s computer (PCM/ECM) needs to be reprogrammed to disable cylinder deactivation in software &mdash; otherwise the computer will still try to activate it and cause issues. Some kits include a Diablo Predator 2 or similar handheld tuner. If the kit doesn&rsquo;t include one, budget an extra <strong>$350&ndash;500</strong> for a tuner.
+          </div>
+        </li>
+        <li>
+          <span class="note-icon">&#128700;</span>
+          <div>
+            <strong>Oil After MDS Delete</strong><br>
+            With MDS removed, the engine no longer needs Mopar&rsquo;s MS-6395 oil additive specification. Any quality <strong>5W-20 full synthetic</strong> will work great &mdash; Castrol Edge is a solid choice.
+          </div>
+        </li>
+        <li>
+          <span class="note-icon">&#127795;</span>
+          <div>
+            <strong>MDS Delete is Legal in Oregon</strong><br>
+            MDS delete is not legal in California (emissions), but <strong>Oregon is fine</strong>. No issues there.
+          </div>
+        </li>
+        <li>
+          <span class="note-icon">&#128230;</span>
+          <div>
+            <strong>Core Charges on Reman Engines</strong><br>
+            Some remanufactured engines have a core charge (<strong>$500&ndash;770</strong>) that is refunded when you return the old engine. Factor this into the upfront cost &mdash; you&rsquo;ll get it back.
+          </div>
+        </li>
+      </ul>
+    </div>
+  </div>
+
+</div>
+
+<footer>
+  <div class="container">
+    Last Updated: November 2026 &nbsp;&middot;&nbsp;
+    Prices may vary. Always verify fitment for your specific year/engine code before purchasing.
+    &nbsp;&middot;&nbsp; <a href="https://ajzahnow.dev">ajzahnow.dev</a>
+  </div>
+</footer>
+
+</body>
+</html>
